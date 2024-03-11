@@ -4,62 +4,65 @@
   align-items: center;
   text-align: justify;
   margin-top: 2%;
+  .item {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    height: 300px;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 35px;
+    margin-bottom: 35px;
+    &:nth-child(even){
+        flex-direction: row;
+      
+    }
+    &:nth-child(odd){
+      flex-direction: row-reverse;
+    
+  }
+  }
+  .paragraph {
+    max-width: 48%;
+    padding-top: 10px;
+  }
+  .imageContainer {
+    width: 50%;
+    height: 100%;
+    .image {
+      width: 100%;
+      height: 100%;
+      border-radius: 2px;
+    }
+    .image:hover {
+      opacity: 0.9;
+      box-shadow: 0 0 12px rgba(252, 234, 246, 0.926);
+    }
+  }
 }
 
-.opposite-display .item {
-  display: flex;
-  flex-direction: row;
-  width: 90%;
-  height: 300px;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 35px;
-  margin-bottom: 35px;
-}
-
-.opposite-display .even {
-  flex-direction: row;
-}
-
-.opposite-display .odd {
-  flex-direction: row-reverse;
-}
-
-.opposite-display .paragraph {
-  max-width: 48%;
-  padding-top: 10px;
-}
-.opposite-display .imageContainer {
-  width: 50%;
-  height: 100%;
-}
-.imageContainer .image {
-  width: 100%;
-  height: 100%;
-  border-radius: 2px;
-}
-.opposite-display .image:hover {
-  opacity: 0.9;
-  box-shadow: 0 0 12px rgba(252, 234, 246, 0.926);
-}
 @media (max-width: 800px) {
-  .opposite-display .item {
-    width: 100%;
-    height: 350px;
+  .opposite-display {
+    .item {
+      width: 100%;
+      height: 350px;
+    }
   }
 }
 @media (max-width: 600px) {
-  .opposite-display .item {
-    flex-direction: column;
-  }
-  .imageContainer{
-    width: 100%;
-  }
-  .imageContainer .image {
-    max-width: 100%;
-    height: 80%;
-  }
-  .opposite-display .paragraph {
-    max-width: 100%;
+  .opposite-display {
+    .item {
+      flex-direction: column !important;
+    }
+    .imageContainer {
+      width: 100%;
+      .image {
+        max-width: 100%;
+        height: 80%;
+      }
+    }
+    .paragraph {
+      max-width: 100%;
+    }
   }
 }
