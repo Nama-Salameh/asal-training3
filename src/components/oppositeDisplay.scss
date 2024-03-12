@@ -8,30 +8,20 @@
     display: flex;
     flex-direction: row;
     width: 90%;
-    height: 300px;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 35px;
     margin-bottom: 35px;
-    &:nth-child(even){
-        flex-direction: row;
-      
-    }
-    &:nth-child(odd){
+    &:nth-child(odd) {
       flex-direction: row-reverse;
-    
-  }
+    }
   }
   .paragraph {
     max-width: 48%;
-    padding-top: 10px;
   }
   .imageContainer {
     width: 50%;
-    height: 100%;
     .image {
       width: 100%;
-      height: 100%;
       border-radius: 2px;
     }
     .image:hover {
@@ -45,7 +35,6 @@
   .opposite-display {
     .item {
       width: 100%;
-      height: 350px;
     }
   }
 }
@@ -53,13 +42,10 @@
   .opposite-display {
     .item {
       flex-direction: column !important;
+      gap: 17px;
     }
     .imageContainer {
       width: 100%;
-      .image {
-        max-width: 100%;
-        height: 80%;
-      }
     }
     .paragraph {
       max-width: 100%;
