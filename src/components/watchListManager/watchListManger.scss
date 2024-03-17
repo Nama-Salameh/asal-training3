@@ -1,0 +1,23 @@
+.watchListManager {
+  .watchingListContainer {
+    display: flex;
+    gap: 20px;
+  }
+  .watchingListContainer {
+    > * {
+      flex-grow: 1;
+      flex-basis: 0;
+
+      .listContainer {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .watchListTitle,
+      .watchedListTitle {
+        text-align: start;
+      }
+    }
+  }
+}

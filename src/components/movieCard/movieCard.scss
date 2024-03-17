@@ -1,0 +1,71 @@
+.movieCard {
+  margin: 15px 0;
+  text-align: start;
+  height: 300px;
+  display: flex;
+  position: relative;
+  margin: 5px;
+  .movieImage {
+    object-fit: fill;
+    flex: 1;
+  }
+  .cardContent {
+    flex: 1;
+    position: relative;
+  }
+  .movieOverview {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cardFooter {
+    width: 90%;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .addButton,
+    .removeButton {
+      text-transform: none !important;
+    }
+  }
+}
+@media (max-width: 900px) {
+  .movieCard {
+    flex-direction: column;
+    height: 470px;
+    .movieImage {
+      height: 280px;
+    }
+    .movieOverview {
+      -webkit-line-clamp: 2;
+    }
+  }
+}
+@media (max-width: 600px) {
+  .movieCard {
+    .movieImage {
+      height: 250px;
+    }
+    .movieTitle{
+        font-size: 16px;
+    }
+    .movieOverview {
+      -webkit-line-clamp: 1;
+    }
+    .cardFooter {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: 10px;
+      .addButton,
+      .removeButton,
+      .releaseDate {
+        margin-left: 10px;
+      }
+     
+    }
+  }
+}
