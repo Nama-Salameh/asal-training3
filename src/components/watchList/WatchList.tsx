@@ -11,6 +11,7 @@ const WatchingList: React.FC<{
 }> = ({ title, movies, onAddToWatchedList, onRemoveFromWatchedList }) => {
   return (
     <div className="watchingList">
+      <h2 className="title">{title}</h2>
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}

@@ -2,8 +2,6 @@
   .watchingListContainer {
     display: flex;
     gap: 20px;
-  }
-  .watchingListContainer {
     > * {
       flex-grow: 1;
       flex-basis: 0;

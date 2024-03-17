@@ -27,11 +27,21 @@ const MovieCard: React.FC<{
         <Typography variant="h6" component="h6" className="movieTitle">
           {movie.title}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p" className="movieOverview">
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component="p"
+          className="movieOverview"
+        >
           {movie.overview}
         </Typography>
         <div className="cardFooter">
-          <Typography variant="body2" color="textSecondary" component="p" className="releaseDate">
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            className="releaseDate"
+          >
             {new Date(movie.release_date * 1000).toLocaleDateString()}
           </Typography>
           {onAddToWatchedList && (

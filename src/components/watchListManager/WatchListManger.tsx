@@ -3,7 +3,6 @@ import "./watchListManger.scss";
 import WatchingList from "../watchList/WatchList";
 import Movie from "../../interfaces/IMovie";
 import SearchBar from "../SearchBar";
-import { VirtualScroller } from "primereact/virtualscroller";
 
 const WatchListManager = () => {
   const [watchList, setWatchList] = useState<Movie[]>([]);
@@ -11,7 +10,6 @@ const WatchListManager = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredWatchList, setFilteredWatchList] = useState<Movie[]>([]);
   const [filteredWatchedList, setFilteredWatchedList] = useState<Movie[]>([]);
-  const [loadedItemCount, setLoadedItemCount] = useState(10);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,54 +61,20 @@ const WatchListManager = () => {
     setFilteredWatchedList(filteredWatchedList);
   }, [searchQuery, watchList, watchedList]);
 
-  const onLoadMore = () => {
-    console.log("count ", loadedItemCount);
-    setLoadedItemCount((prevCount) => prevCount + 10);
-    console.log("after add ", loadedItemCount);
-  };
   return (
     <div className="watchListManager">
       <SearchBar onSearch={handleSearch} />
       <div className="watchingListContainer">
-        <div className="listContainer">
-          <h2 className="watchListTitle">Watch List</h2>
-          <VirtualScroller
-            items={filteredWatchList.slice(0, loadedItemCount)}
-            itemSize={200}
-            itemTemplate={(movie: Movie) => (
-              <WatchingList
-                title="Watch List"
-                movies={[movie]}
-                onAddToWatchedList={addToWatchedList}
-              />
-            )}
-            className="border-1 surface-border border-round"
-            style={{ height: "650px" }}
-            onLazyLoad={onLoadMore}
-          />
-        </div>
-
-        <div className="listContainer">
-          <h2 className="watchedListTitle">Watched List</h2>
-          {filteredWatchedList.length === 0 ? (
-            <div className="emptyList">No movies watched yet</div>
-          ) : (
-            <VirtualScroller
-              items={filteredWatchedList.slice(0, loadedItemCount)}
-              itemSize={200}
-              itemTemplate={(movie: Movie) => (
-                <WatchingList
-                  title="Watch List"
-                  movies={[movie]}
-                  onRemoveFromWatchedList={removeFromWatchedList}
-                />
-              )}
-              className="border-1 surface-border border-round"
-              style={{ height: "650px" }}
-              onLazyLoad={onLoadMore}
-            />
-          )}
-        </div>
+        <WatchingList
+          title="Watch List"
+          movies={filteredWatchList.slice(0, 10)}
+          onAddToWatchedList={addToWatchedList}
+        />
+        <WatchingList
+          title="Watched List"
+          movies={filteredWatchedList.slice(0, 10)}
+          onRemoveFromWatchedList={removeFromWatchedList}
+        />
       </div>
     </div>
   );
