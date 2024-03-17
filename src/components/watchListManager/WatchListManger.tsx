@@ -68,7 +68,6 @@ const WatchListManager = () => {
     setLoadedItemCount((prevCount) => prevCount + 10);
     console.log("after add ", loadedItemCount);
   };
-
   return (
     <div className="watchListManager">
       <SearchBar onSearch={handleSearch} />
@@ -93,20 +92,24 @@ const WatchListManager = () => {
 
         <div className="listContainer">
           <h2 className="watchedListTitle">Watched List</h2>
-          <VirtualScroller
-            items={filteredWatchedList.slice(0, loadedItemCount)}
-            itemSize={200}
-            itemTemplate={(movie: Movie) => (
-              <WatchingList
-                title="Watch List"
-                movies={[movie]}
-                onRemoveFromWatchedList={removeFromWatchedList}
-              />
-            )}
-            className="border-1 surface-border border-round"
-            style={{ height: "650px" }}
-            onLazyLoad={onLoadMore}
-          />
+          {filteredWatchedList.length === 0 ? (
+            <div className="emptyList">No movies watched yet</div>
+          ) : (
+            <VirtualScroller
+              items={filteredWatchedList.slice(0, loadedItemCount)}
+              itemSize={200}
+              itemTemplate={(movie: Movie) => (
+                <WatchingList
+                  title="Watch List"
+                  movies={[movie]}
+                  onRemoveFromWatchedList={removeFromWatchedList}
+                />
+              )}
+              className="border-1 surface-border border-round"
+              style={{ height: "650px" }}
+              onLazyLoad={onLoadMore}
+            />
+          )}
         </div>
       </div>
     </div>
