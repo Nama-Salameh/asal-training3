@@ -1,7 +1,7 @@
-export default interface Movie {
+export default interface Nature {
   id: string;
   title: string;
-  poster: string;
+  avatar: string;
   overview: string;
   release_date: number;
 }

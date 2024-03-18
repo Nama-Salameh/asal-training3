@@ -1,11 +1,11 @@
-.movieCard {
+.natureCard {
   margin: 15px 0;
   text-align: start;
   height: 300px;
   display: flex;
   position: relative;
   margin: 5px;
-  .movieImage {
+  .natureImage {
     object-fit: fill;
     flex: 1;
   }
@@ -13,7 +13,7 @@
     flex: 1;
     position: relative;
   }
-  .movieOverview {
+  .natureOverview {
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
@@ -34,26 +34,26 @@
   }
 }
 @media (max-width: 900px) {
-  .movieCard {
+  .natureCard {
     flex-direction: column;
     height: 470px;
-    .movieImage {
+    .natureImage {
       height: 280px;
     }
-    .movieOverview {
+    .natureOverview {
       -webkit-line-clamp: 2;
     }
   }
 }
 @media (max-width: 600px) {
-  .movieCard {
-    .movieImage {
+  .natureCard {
+    .natureImage {
       height: 250px;
     }
-    .movieTitle {
+    .natureTitle {
       font-size: 16px;
     }
-    .movieOverview {
+    .natureOverview {
       -webkit-line-clamp: 1;
     }
     .cardFooter {

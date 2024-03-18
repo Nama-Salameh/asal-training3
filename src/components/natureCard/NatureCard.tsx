@@ -6,34 +6,34 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import Movie from "../../interfaces/IMovie";
-import "./movieCard.scss";
+import Nature from "../../interfaces/INature";
+import "./natureCard.scss";
 
-const MovieCard: React.FC<{
-  movie: Movie;
-  onAddToWatchedList?: () => void;
-  onRemoveFromWatchedList?: () => void;
-}> = ({ movie, onAddToWatchedList, onRemoveFromWatchedList }) => {
+const NatureCard: React.FC<{
+  nature: Nature;
+  onAddToVisitedNatureList?: () => void;
+  onRemoveFromVisitedNatureList?: () => void;
+}> = ({ nature, onAddToVisitedNatureList, onRemoveFromVisitedNatureList }) => {
   return (
-    <Card key={movie.id} className="movieCard">
+    <Card key={nature.id} className="natureCard">
       <CardMedia
         component="img"
-        alt={movie.title}
-        image={movie.poster}
-        title={movie.title}
-        className="movieImage"
+        alt={nature.title}
+        image={nature.avatar}
+        title={nature.title}
+        className="natureImage"
       />
       <CardContent className="cardContent">
-        <Typography variant="h6" component="h6" className="movieTitle">
-          {movie.title}
+        <Typography variant="h6" component="h6" className="natureTitle">
+          {nature.title}
         </Typography>
         <Typography
           variant="body2"
           color="textSecondary"
           component="p"
-          className="movieOverview"
+          className="natureOverview"
         >
-          {movie.overview}
+          {nature.overview}
         </Typography>
         <div className="cardFooter">
           <Typography
@@ -42,20 +42,20 @@ const MovieCard: React.FC<{
             component="p"
             className="releaseDate"
           >
-            {new Date(movie.release_date * 1000).toLocaleDateString()}
+            {new Date(nature.release_date * 1000).toLocaleDateString()}
           </Typography>
-          {onAddToWatchedList && (
+          {onAddToVisitedNatureList && (
             <Button
-              onClick={onAddToWatchedList}
+              onClick={onAddToVisitedNatureList}
               variant="contained"
               className="addButton"
             >
-              Watch
+              Visit
             </Button>
           )}
-          {onRemoveFromWatchedList && (
+          {onRemoveFromVisitedNatureList && (
             <Button
-              onClick={onRemoveFromWatchedList}
+              onClick={onRemoveFromVisitedNatureList}
               variant="contained"
               color="secondary"
               className="removeButton"
@@ -69,4 +69,4 @@ const MovieCard: React.FC<{
   );
 };
 
-export default MovieCard;
+export default NatureCard;

@@ -2,7 +2,7 @@ import React from "react";
 import "./App.scss";
 import OppositeDisplay from "./components/OppositeDisplay";
 import data from "./constants/data";
-import WatchListManger from "./components/watchListManager/WatchListManger";
+import NatureListManger from "./components/natureListManager/NatureListManger";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <h1 className="appTitle">Gaza Strip </h1>
       <OppositeDisplay data={data} />
       <hr /> <hr />
-      <WatchListManger />
+      <NatureListManger />
     </div>
   );
 }
