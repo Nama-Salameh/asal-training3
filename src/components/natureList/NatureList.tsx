@@ -8,7 +8,14 @@ const NatureList: React.FC<{
   natures: Nature[];
   onAddToVisitedNatureList?: (nature: Nature) => void;
   onRemoveFromVisitedNatureList?: (nature: Nature) => void;
-}> = ({ title, natures,  onAddToVisitedNatureList, onRemoveFromVisitedNatureList }) => {
+  listEndRef: React.RefObject<HTMLDivElement>;
+}> = ({
+  title,
+  natures,
+  onAddToVisitedNatureList,
+  onRemoveFromVisitedNatureList,
+  listEndRef,
+}) => {
   return (
     <div className="natureList">
       <h2 className="title">{title}</h2>
@@ -17,7 +24,9 @@ const NatureList: React.FC<{
           key={nature.id}
           nature={nature}
           onAddToVisitedNatureList={
-            onAddToVisitedNatureList ? () =>  onAddToVisitedNatureList(nature) : undefined
+            onAddToVisitedNatureList
+              ? () => onAddToVisitedNatureList(nature)
+              : undefined
           }
           onRemoveFromVisitedNatureList={
             onRemoveFromVisitedNatureList
@@ -26,6 +35,7 @@ const NatureList: React.FC<{
           }
         />
       ))}
+      <div ref={listEndRef} style={{ height: "1px" }} />
     </div>
   );
 };
