@@ -12,7 +12,7 @@ export interface Nature {
 }
 
 const NatureListManager = () => {
-  const [natureList, setNatureList] = useState<Nature[]>([]); // all natures
+  const [natureList, setNatureList] = useState<Nature[]>([]);
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,20 +60,7 @@ const NatureListManager = () => {
 
     fetchData();
   }, []);
-  /*
-  useEffect(() => {
-    const filteredNatureList = natureList.filter((nature) =>
-      nature.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
-    const filteredVisitedNatureList = visitedNatureList.filter((nature) =>
-      nature.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    setFilteredNatureList(filteredNatureList);
-    setFilteredVisitedNatureList(filteredVisitedNatureList);
-  }, [searchQuery, natureList]);
-*/
   useEffect(() => {
     const handleScroll = () => {
       if (
