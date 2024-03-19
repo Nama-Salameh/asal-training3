@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./natureListManger.scss";
+import { useEffect, useRef, useState } from "react";
 import NatureList from "../../components/NatureTaskComponents/natureList/NatureList";
 import SearchBar from "../../components/NatureTaskComponents/searchBar/SearchBar";
+import "./natureListManger.scss";
 
 export interface Nature {
   id: string;
@@ -16,14 +16,8 @@ const NatureListManager = () => {
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
-  const natureListEndRef = useRef<HTMLDivElement>(null);
-  const visitedNatureListEndRef = useRef<HTMLDivElement>(null);
   const [natureListLoadedItemCount, setNatureListLoadedItemCount] =
     useState(10);
-  const [
-    visitedNatureListLoadedItemCount,
-    setVisitedNatureListLoadedItemCount,
-  ] = useState(10);
 
   const addToVisitedNatureList = (natureId: string) => {
     setVisitedIds((prevState) => [natureId, ...prevState]);
@@ -35,11 +29,6 @@ const NatureListManager = () => {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-  };
-
-  const isElementAtViewportBottom = (element: HTMLElement) => {
-    const elementRect = element.getBoundingClientRect();
-    return elementRect.bottom <= window.innerHeight;
   };
 
   useEffect(() => {
@@ -63,31 +52,25 @@ const NatureListManager = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (
-        natureListEndRef.current &&
-        isElementAtViewportBottom(natureListEndRef.current)
-      ) {
+      const container = containerRef.current;
+      if (!container) return;
+      const { scrollTop, clientHeight, scrollHeight } = container;
+
+      if (scrollHeight - (scrollTop + clientHeight) <= 1) {
         setNatureListLoadedItemCount((prevCount) => prevCount + 10);
       }
-      if (
-        visitedNatureListEndRef.current &&
-        isElementAtViewportBottom(visitedNatureListEndRef.current)
-      ) {
-        setVisitedNatureListLoadedItemCount((prevCount) => prevCount + 10);
+    };
+
+    if (containerRef.current) {
+      containerRef.current.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.removeEventListener("scroll", handleScroll);
       }
     };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
   }, []);
 
-  useEffect(() => {
-    const c = containerRef.current;
-    //c?.scrollTop
-  }, []);
   return (
     <div className="natureListManager" ref={containerRef}>
       <SearchBar onSearch={handleSearch} />
@@ -97,14 +80,13 @@ const NatureListManager = () => {
           natures={natureList.filter((item) => !visitedIds.includes(item.id))}
           onAddToVisitedNatureList={addToVisitedNatureList}
           searchQuery={searchQuery}
-          listEndRef={natureListEndRef}
+          loadedItemsCount={natureListLoadedItemCount}
         />
         <NatureList
           title="Visited Nature List"
           natures={natureList.filter((item) => visitedIds.includes(item.id))}
           onRemoveFromVisitedNatureList={removeFromVisitedNatureList}
           searchQuery={searchQuery}
-          listEndRef={visitedNatureListEndRef}
         />
       </div>
     </div>

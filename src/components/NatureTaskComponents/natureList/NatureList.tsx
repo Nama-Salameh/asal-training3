@@ -8,14 +8,14 @@ const NatureList: React.FC<{
   onAddToVisitedNatureList?: (natureId: string) => void;
   onRemoveFromVisitedNatureList?: (natureId: string) => void;
   searchQuery: string;
-  listEndRef: React.RefObject<HTMLDivElement>;
+  loadedItemsCount?: number;
 }> = ({
   title,
   natures,
   onAddToVisitedNatureList,
   onRemoveFromVisitedNatureList,
   searchQuery,
-  listEndRef,
+  loadedItemsCount,
 }) => {
   const [filteredNatureList, setFilteredNatureList] = useState<Nature[]>([]);
 
@@ -23,8 +23,10 @@ const NatureList: React.FC<{
     const filteredNatureList = natures.filter((nature) =>
       nature.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    setFilteredNatureList(filteredNatureList);
-  }, [searchQuery, natures]);
+    const slicedNatureList = filteredNatureList.slice(0, loadedItemsCount);
+
+    setFilteredNatureList(slicedNatureList);
+  }, [searchQuery, natures, loadedItemsCount]);
 
   return (
     <div className="natureList">
@@ -55,7 +57,6 @@ const NatureList: React.FC<{
           </div>
         </div>
       ))}
-      <div ref={listEndRef} style={{ height: "1px" }} />
     </div>
   );
 };
