@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./natureListManger.scss";
-import NatureList from "../natureList/NatureList";
-import Nature from "../../interfaces/INature";
-import SearchBar from "../SearchBar";
+import NatureList from "../../components/NatureTaskComponents/natureList/NatureList";
+import SearchBar from "../../components/NatureTaskComponents/searchBar/SearchBar";
+
+export interface Nature {
+  id: string;
+  title: string;
+  avatar: string;
+  overview: string;
+  release_date: number;
+}
 
 const NatureListManager = () => {
-  const [natureList, setNatureList] = useState<Nature[]>([]);
-  const [visitedNatureList, setVisitedNatureList] = useState<Nature[]>([]);
+  const [natureList, setNatureList] = useState<Nature[]>([]); // all natures
+  const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filteredNatureList, setFilteredNatureList] = useState<Nature[]>([]);
-  const [filteredVisitedNatureList, setFilteredVisitedNatureList] = useState<
-    Nature[]
-  >([]);
+  const containerRef = useRef<HTMLDivElement>(null);
   const natureListEndRef = useRef<HTMLDivElement>(null);
   const visitedNatureListEndRef = useRef<HTMLDivElement>(null);
   const [natureListLoadedItemCount, setNatureListLoadedItemCount] =
@@ -20,6 +24,23 @@ const NatureListManager = () => {
     visitedNatureListLoadedItemCount,
     setVisitedNatureListLoadedItemCount,
   ] = useState(10);
+
+  const addToVisitedNatureList = (natureId: string) => {
+    setVisitedIds((prevState) => [natureId, ...prevState]);
+  };
+
+  const removeFromVisitedNatureList = (natureId: string) => {
+    setVisitedIds(visitedIds.filter((item) => item !== natureId));
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const isElementAtViewportBottom = (element: HTMLElement) => {
+    const elementRect = element.getBoundingClientRect();
+    return elementRect.bottom <= window.innerHeight;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,25 +60,7 @@ const NatureListManager = () => {
 
     fetchData();
   }, []);
-
-  const addToVisitedNatureList = (nature: Nature) => {
-    setVisitedNatureList((prevState) => [nature, ...prevState]);
-    setNatureList((prevState) =>
-      prevState.filter((item) => item.id !== nature.id)
-    );
-  };
-
-  const removeFromVisitedNatureList = (nature: Nature) => {
-    setVisitedNatureList((prevState) =>
-      prevState.filter((item) => item.id !== nature.id)
-    );
-    setNatureList((prevState) => [...prevState, nature]);
-  };
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
+  /*
   useEffect(() => {
     const filteredNatureList = natureList.filter((nature) =>
       nature.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -69,12 +72,8 @@ const NatureListManager = () => {
 
     setFilteredNatureList(filteredNatureList);
     setFilteredVisitedNatureList(filteredVisitedNatureList);
-  }, [searchQuery, natureList, visitedNatureList]);
-
-  const isElementAtViewportBottom = (element: HTMLElement) => {
-    const elementRect = element.getBoundingClientRect();
-    return elementRect.bottom <= window.innerHeight;
-  };
+  }, [searchQuery, natureList]);
+*/
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -98,23 +97,26 @@ const NatureListManager = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const c = containerRef.current;
+    //c?.scrollTop
+  }, []);
   return (
-    <div className="natureListManager">
+    <div className="natureListManager" ref={containerRef}>
       <SearchBar onSearch={handleSearch} />
       <div className="natureListContainer">
         <NatureList
           title="Nature List"
-          natures={filteredNatureList.slice(0, natureListLoadedItemCount)}
+          natures={natureList.filter((item) => !visitedIds.includes(item.id))}
           onAddToVisitedNatureList={addToVisitedNatureList}
+          searchQuery={searchQuery}
           listEndRef={natureListEndRef}
         />
         <NatureList
           title="Visited Nature List"
-          natures={filteredVisitedNatureList.slice(
-            0,
-            visitedNatureListLoadedItemCount
-          )}
+          natures={natureList.filter((item) => visitedIds.includes(item.id))}
           onRemoveFromVisitedNatureList={removeFromVisitedNatureList}
+          searchQuery={searchQuery}
           listEndRef={visitedNatureListEndRef}
         />
       </div>
