@@ -1,0 +1,89 @@
+.natureList {
+  .title {
+    text-align: start;
+    font-weight: 450;
+    font-size: 20px;
+  }
+
+  .natureCard {
+    text-align: start;
+    height: 300px;
+    display: flex;
+    position: relative;
+    margin: 5px;
+    border: solid 1px rgb(169, 168, 168);
+    border-radius: 5px;
+
+    .cardContent {
+      flex: 1 !important;
+      position: relative;
+      padding: 0 10px;
+    }
+    .natureImage {
+      flex: 1 !important;
+      width: 100px;
+      object-fit: cover;
+    }
+
+    .natureOverview {
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .addButton,
+    .removeButton {
+      position: absolute;
+      bottom: 7px;
+      right: 7px;
+      width: 80px;
+      height: 30px;
+    }
+    .addButton {
+      background-color: rgb(213, 211, 211);
+      border: solid 1px rgb(170, 170, 170);
+      border-radius: 3px;
+      font-size: 14px;
+    }
+    .removeButton {
+      background-color: rgb(251, 78, 78);
+      border: solid 1px rgb(253, 103, 103);
+      border-radius: 3px;
+      font-size: 14px;
+    }
+  }
+}
+@media (max-width: 900px) {
+  .natureList {
+    .natureCard {
+      flex-direction: column;
+      height: 470px;
+      .natureImage {
+        height: 280px;
+        width: 100%;
+      }
+      .natureOverview {
+        -webkit-line-clamp: 2;
+      }
+    }
+  }
+}
+@media (max-width: 600px) {
+  .natureList {
+    .title {
+      font-size: 18px !important;
+    }
+    .natureCard {
+      .natureImage {
+        height: 250px;
+      }
+      .natureTitle {
+        font-size: 16px;
+      }
+      .natureOverview {
+        -webkit-line-clamp: 1;
+      }
+    }
+  }
+}

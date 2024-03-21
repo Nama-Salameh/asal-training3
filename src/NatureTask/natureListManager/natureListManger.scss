@@ -1,0 +1,12 @@
+.natureListManager {
+  height: 100vh;
+  overflow-y: scroll;
+  .natureListContainer {
+    display: flex;
+    gap: 20px;
+    > * {
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+  }
+}

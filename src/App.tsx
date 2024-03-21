@@ -1,13 +1,10 @@
-import React from "react";
 import "./App.scss";
-import OppositeDisplay from "./components/OppositeDisplay";
-import data from "./constants/data";
+import NatureListManger from "./NatureTask/natureListManager/NatureListManger";
 
 function App() {
   return (
     <div className="app">
-      <h1 className="appTitle">Gaza Strip </h1>
-      <OppositeDisplay data={data} />
+      <NatureListManger />
     </div>
   );
 }

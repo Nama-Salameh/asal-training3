@@ -1,7 +1,7 @@
-import AlZahraImage from "../images/AlZahra.jpg";
-import AlKaramaImage from "../images/AlKarameh.jpg";
-import AlAtatraImage from "../images/AlAtatra.jpg";
-import BeitHanounImage from "../images/BeitHanoun.jpg";
+import AlZahraImage from "../images/OppositeDisplayImages/AlZahra.jpg";
+import AlKaramaImage from "../images/OppositeDisplayImages/AlKarameh.jpg";
+import AlAtatraImage from "../images/OppositeDisplayImages/AlAtatra.jpg";
+import BeitHanounImage from "../images/OppositeDisplayImages/BeitHanoun.jpg";
 const data = [
     {
       image: BeitHanounImage,
