@@ -14,7 +14,7 @@ const CountriesSelector: React.FC = () => {
     useState<Country[]>(countriesData);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const countriesContainer = useRef<HTMLUListElement>(null);
+  const countriesListRef = useRef<HTMLUListElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -65,21 +65,22 @@ const CountriesSelector: React.FC = () => {
   }, [inputValue]);
 
   useEffect(() => {
-    if (countriesContainer.current) {
-      const listItems = countriesContainer.current.children;
-      if (listItems && listItems[focusedIndex]) {
-        const listItem = listItems[focusedIndex] as HTMLElement;
+    if (countriesListRef.current) {
+      const listItem = countriesListRef.current.children[
+        focusedIndex
+      ] as HTMLElement;
+      if (listItem) {
         const listItemOffsetTop = listItem.offsetTop;
         const listItemHeight = listItem.offsetHeight;
-        const containerScrollTop = countriesContainer.current.scrollTop;
-        const containerHeight = countriesContainer.current.offsetHeight;
+        const containerScrollTop = countriesListRef.current.scrollTop;
+        const containerHeight = countriesListRef.current.offsetHeight;
         if (listItemOffsetTop < containerScrollTop) {
-          countriesContainer.current.scrollTop = listItemOffsetTop;
+          countriesListRef.current.scrollTop = listItemOffsetTop;
         } else if (
           listItemOffsetTop + listItemHeight >
           containerScrollTop + containerHeight
         ) {
-          countriesContainer.current.scrollTop =
+          countriesListRef.current.scrollTop =
             listItemOffsetTop + listItemHeight - containerHeight;
         }
       }
@@ -100,7 +101,7 @@ const CountriesSelector: React.FC = () => {
         className="searchInput"
       />
       {isOpen && (
-        <ul className="countriesList" tabIndex={0} ref={countriesContainer}>
+        <ul className="countriesList" tabIndex={0} ref={countriesListRef}>
           {filteredCountries.map((country, index) => (
             <li
               key={country.id}
