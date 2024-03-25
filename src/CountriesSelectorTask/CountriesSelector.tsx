@@ -12,11 +12,13 @@ const CountriesSelector: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [filteredCountries, setFilteredCountries] =
     useState<Country[]>(countriesData);
-  const [focusedIndex, setFocusedIndex] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const countriesListRef = useRef<HTMLUListElement>(null);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (focusedIndex !== null) {
+      return;
+    }
     setInputValue(event.target.value);
     setIsOpen(true);
   };
@@ -24,33 +26,62 @@ const CountriesSelector: React.FC = () => {
   const handleOptionClick = (country: Country) => {
     setInputValue(country.name);
     setIsOpen(false);
-    if (inputRef.current) {
-      inputRef.current.blur();
+    if (containerRef.current) {
+      containerRef.current.blur();
     }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      setFocusedIndex(
-        (prevIndex) => (prevIndex + 1) % filteredCountries.length
-      );
+      if (focusedIndex === null) {
+        setFocusedIndex(0);
+      } else if (focusedIndex < filteredCountries.length - 1) {
+        setFocusedIndex((prevIndex) =>
+          prevIndex !== null ? prevIndex + 1 : 0
+        );
+      }
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
-      setFocusedIndex(
-        (prevIndex) =>
-          (prevIndex + filteredCountries.length - 1) % filteredCountries.length
-      );
+      if (focusedIndex === 0 || focusedIndex === null) {
+        setFocusedIndex(null);
+      } else {
+        setFocusedIndex((prevIndex) =>
+          prevIndex !== null ? prevIndex - 1 : 0
+        );
+      }
     } else if (event.key === "Escape") {
       event.preventDefault();
       setIsOpen(false);
+      setInputValue("");
+      setFocusedIndex(null);
+      if (containerRef.current) {
+        containerRef.current.querySelector("input")?.blur();
+      }
     } else if (event.key === "Enter") {
       event.preventDefault();
-      if (filteredCountries[focusedIndex]) {
+      if (focusedIndex !== null) {
         handleOptionClick(filteredCountries[focusedIndex]);
       }
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setInputValue("");
+        setIsOpen(false);
+        setFocusedIndex(null);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -65,43 +96,37 @@ const CountriesSelector: React.FC = () => {
   }, [inputValue]);
 
   useEffect(() => {
-    if (countriesListRef.current) {
-      const listItem = countriesListRef.current.children[
-        focusedIndex
-      ] as HTMLElement;
-      if (listItem) {
-        const listItemOffsetTop = listItem.offsetTop;
-        const listItemHeight = listItem.offsetHeight;
-        const containerScrollTop = countriesListRef.current.scrollTop;
-        const containerHeight = countriesListRef.current.offsetHeight;
-        if (listItemOffsetTop < containerScrollTop) {
-          countriesListRef.current.scrollTop = listItemOffsetTop;
-        } else if (
-          listItemOffsetTop + listItemHeight >
-          containerScrollTop + containerHeight
-        ) {
-          countriesListRef.current.scrollTop =
-            listItemOffsetTop + listItemHeight - containerHeight;
+    const scrollToSelectedListItem = () => {
+      if (containerRef.current && focusedIndex !== null) {
+        const focusedItem = containerRef.current.children[1].children[
+          focusedIndex
+        ] as HTMLElement;
+        if (focusedItem) {
+          focusedItem.scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+            inline: "nearest",
+          });
         }
       }
-    }
+    };
+
+    scrollToSelectedListItem();
   }, [focusedIndex]);
 
   return (
-    <div className="countriesSelectorContainer">
+    <div className="countriesSelectorContainer" ref={containerRef}>
       <input
         type="text"
         value={inputValue}
         onChange={handleInputChange}
         onFocus={() => setIsOpen(true)}
-        onBlur={() => setIsOpen(false)}
         onKeyDown={handleKeyDown}
         placeholder="Select an option..."
-        ref={inputRef}
         className="searchInput"
       />
       {isOpen && (
-        <ul className="countriesList" tabIndex={0} ref={countriesListRef}>
+        <ul className="countriesList">
           {filteredCountries.map((country, index) => (
             <li
               key={country.id}
