@@ -27,7 +27,7 @@ const CountriesSelector: React.FC = () => {
     setInputValue(country.name);
     setIsOpen(false);
     if (containerRef.current) {
-      containerRef.current.blur();
+      containerRef.current.querySelector("input")?.blur();
     }
   };
 
