@@ -12,13 +12,9 @@ const CountriesSelector: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [filteredCountries, setFilteredCountries] =
     useState<Country[]>(countriesData);
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (focusedIndex !== null) {
-      return;
-    }
     setInputValue(event.target.value);
     setIsOpen(true);
   };
@@ -26,42 +22,34 @@ const CountriesSelector: React.FC = () => {
   const handleOptionClick = (country: Country) => {
     setInputValue(country.name);
     setIsOpen(false);
-    if (containerRef.current) {
-      containerRef.current.querySelector("input")?.blur();
-    }
+    document.getElementById("-1")?.blur();
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "ArrowDown") {
-      event.preventDefault();
-      if (focusedIndex === null) {
-        setFocusedIndex(0);
-      } else if (focusedIndex < filteredCountries.length - 1) {
-        setFocusedIndex((prevIndex) =>
-          prevIndex !== null ? prevIndex + 1 : 0
-        );
+      document.getElementById("country0")?.focus();
+    }
+  };
+
+  const handelListKeyDown = (
+    event: React.KeyboardEvent<HTMLDivElement>,
+    index: number
+  ) => {
+    event.preventDefault();
+    if (event.key === "ArrowDown") {
+      index++;
+      if (index < filteredCountries.length) {
+        document.getElementById(`country${index}`)?.focus();
       }
     } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      if (focusedIndex === 0 || focusedIndex === null) {
-        setFocusedIndex(null);
-      } else {
-        setFocusedIndex((prevIndex) =>
-          prevIndex !== null ? prevIndex - 1 : 0
-        );
+      index--;
+      if (index === -1) {
+        document.getElementById("-1")?.focus();
       }
-    } else if (event.key === "Escape") {
-      event.preventDefault();
-      setIsOpen(false);
-      setInputValue("");
-      setFocusedIndex(null);
-      if (containerRef.current) {
-        containerRef.current.querySelector("input")?.blur();
-      }
+      document.getElementById(`country${index}`)?.focus();
     } else if (event.key === "Enter") {
-      event.preventDefault();
-      if (focusedIndex !== null) {
-        handleOptionClick(filteredCountries[focusedIndex]);
+      if (index !== -1) {
+        handleOptionClick(filteredCountries[index]);
       }
     }
   };
@@ -74,7 +62,6 @@ const CountriesSelector: React.FC = () => {
       ) {
         setInputValue("");
         setIsOpen(false);
-        setFocusedIndex(null);
       }
     };
     document.addEventListener("click", handleClickOutside);
@@ -95,51 +82,36 @@ const CountriesSelector: React.FC = () => {
     return () => clearTimeout(timer);
   }, [inputValue]);
 
-  useEffect(() => {
-    const scrollToSelectedListItem = () => {
-      if (containerRef.current && focusedIndex !== null) {
-        const focusedItem = containerRef.current.children[1].children[
-          focusedIndex
-        ] as HTMLElement;
-        if (focusedItem) {
-          focusedItem.scrollIntoView({
-            behavior: "smooth",
-            block: "end",
-            inline: "nearest",
-          });
-        }
-      }
-    };
-
-    scrollToSelectedListItem();
-  }, [focusedIndex]);
-
   return (
     <div className="countriesSelectorContainer" ref={containerRef}>
       <input
+        id="-1"
         type="text"
         value={inputValue}
         onChange={handleInputChange}
         onFocus={() => setIsOpen(true)}
         onKeyDown={handleKeyDown}
-        placeholder="Select an option..."
+        placeholder="Select a country..."
         className="searchInput"
       />
       {isOpen && (
-        <ul className="countriesList">
-          {filteredCountries.map((country, index) => (
-            <li
-              key={country.id}
-              onClick={() => handleOptionClick(country)}
-              className={index === focusedIndex ? "selected" : ""}
-            >
-              {country.name}
-            </li>
-          ))}
-        </ul>
+        <div className="countriesList">
+          {filteredCountries.map((country, index) => {
+            return (
+              <div
+                tabIndex={0}
+                id={`country${index}`}
+                key={index}
+                onClick={() => handleOptionClick(country)}
+                onKeyDown={(e) => handelListKeyDown(e, index)}
+              >
+                {country.name}
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
 };
-
 export default CountriesSelector;
