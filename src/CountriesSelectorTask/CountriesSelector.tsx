@@ -17,12 +17,21 @@ const CountriesSelector: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     setIsOpen(true);
+
+    const timer = setTimeout(() => {
+      setFilteredCountries(
+        countriesData.filter((country) =>
+          country.name.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      );
+    }, 100);
+    return () => clearTimeout(timer);
   };
 
   const handleOptionClick = (country: Country) => {
     setInputValue(country.name);
     setIsOpen(false);
-    document.getElementById("-1")?.blur();
+    document.getElementById("searchInput")?.blur();
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -36,21 +45,26 @@ const CountriesSelector: React.FC = () => {
     index: number
   ) => {
     event.preventDefault();
-    if (event.key === "ArrowDown") {
-      index++;
-      if (index < filteredCountries.length) {
+    switch (event.key) {
+      case "ArrowDown":
+        index++;
+        if (index === filteredCountries.length) {
+          document.getElementById("country0")?.focus();
+        } else if (index < filteredCountries.length) {
+          document.getElementById(`country${index}`)?.focus();
+        }
+        break;
+      case "ArrowUp":
+        index--;
+        if (index === -1) {
+          document.getElementById("searchInput")?.focus();
+        }
         document.getElementById(`country${index}`)?.focus();
-      }
-    } else if (event.key === "ArrowUp") {
-      index--;
-      if (index === -1) {
-        document.getElementById("-1")?.focus();
-      }
-      document.getElementById(`country${index}`)?.focus();
-    } else if (event.key === "Enter") {
-      if (index !== -1) {
-        handleOptionClick(filteredCountries[index]);
-      }
+        break;
+      case "Enter":
+        if (index !== -1) {
+          handleOptionClick(filteredCountries[index]);
+        }
     }
   };
 
@@ -70,22 +84,10 @@ const CountriesSelector: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setFilteredCountries(
-        countriesData.filter((country) =>
-          country.name.toLowerCase().includes(inputValue.toLowerCase())
-        )
-      );
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [inputValue]);
-
   return (
     <div className="countriesSelectorContainer" ref={containerRef}>
       <input
-        id="-1"
+        id="searchInput"
         type="text"
         value={inputValue}
         onChange={handleInputChange}
