@@ -1,10 +1,10 @@
 import "./App.scss";
-import NatureListManger from "./NatureTask/natureListManager/NatureListManger";
+import CountriesSelector from "./CountriesSelectorTask/CountriesSelector";
 
 function App() {
   return (
     <div className="app">
-      <NatureListManger />
+      <CountriesSelector />
     </div>
   );
 }
