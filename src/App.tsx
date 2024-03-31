@@ -1,10 +1,10 @@
 import "./App.scss";
-import CountriesSelector from "./CountriesSelectorTask/CountriesSelector";
+import SignUpForm from "./SignUpTask/SignUpForm";
 
 function App() {
   return (
     <div className="app">
-      <CountriesSelector />
+      <SignUpForm />
     </div>
   );
 }
