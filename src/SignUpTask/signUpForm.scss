@@ -1,108 +1,93 @@
-.form {
+.signUpForm {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: #636363;
-  form{
-    width: 100%;
-  }
   h2 {
     color: black;
   }
-}
-.textInput {
-  border: 1px solid rgb(189, 187, 187);
-  border-radius: 3px;
-  padding: 15px 15px;
-  width: calc(100% - 30px);
-  margin: 10px 0;
-  font-size: 16px;
-}
-.blockInput {
-  display: block;
-}
-.inlineInputContainer {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-}
-.checkboxContanier {
-  margin: 20px 0;
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .agreementCheckbox {
-    margin-right: 8px;
+  button {
     cursor: pointer;
   }
-}
-.continueButton {
-  width: 100%;
-  margin: 30px 0;
-  border: 1px solid #007bff;
-  border-radius: 5px;
-  background-color: white;
-  color: #007bff;
-  padding: 10px;
-  font-size: 16px;
-}
-.continueWithGoogle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.googleIcon {
-  width: 30px;
-  margin-right: 10px;
-}
+  form {
+    width: 100%;
 
-.changeButton {
-  border: none;
-  background-color: white;
-  color: #007bff;
-  text-decoration: underline;
-  font-size: 16px;
-}
-
-.hrContainer {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-top: 8px;
-  margin-bottom: 25px;
-}
-
-.hrContainer hr {
-  flex-grow: 1;
-  border: none;
-  height: 1px;
-  background-color: #ccc;
-  margin: 0 10px;
-}
-
-.hrContainer span {
-  font-size: 16px;
-  color: #999;
-}
-button {
-  cursor: pointer;
-}
-.emailSignUpContainer {
-  width: 100%;
+    .inlineInputContainer {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      .inputDiv {
+        width: 100%;
+      }
+    }
+    .emailSignUpContainer {
+      width: 100%;
+    }
+    .checkboxContanier {
+      margin: 20px 0;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .agreementCheckbox {
+        margin-right: 8px;
+        cursor: pointer;
+      }
+    }
+    .continueButton {
+      width: 100%;
+      margin: 30px 0;
+      border: 1px solid #007bff;
+      border-radius: 5px;
+      background-color: white;
+      color: #007bff;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .continueWithGoogle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .googleIcon {
+        width: 30px;
+        margin-right: 10px;
+      }
+    }
+    .disabled {
+      cursor: default;
+      opacity: 0.5;
+    }
+  }
+  .hrContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 25px;
+    hr {
+      flex-grow: 1;
+      border: none;
+      height: 1px;
+      background-color: #ccc;
+      margin: 0 10px;
+    }
+    span {
+      font-size: 16px;
+      color: #999;
+    }
+  }
+  .changeButton {
+    border: none;
+    background-color: white;
+    color: #007bff;
+    text-decoration: underline;
+    font-size: 16px;
+  }
 }
 .agreementLink {
   text-decoration: underline;
   cursor: pointer;
-}
-.errorMessage{
-    color: red;
-    font-size: 14px;
-    text-align: left !important; }
-.disabled{
-    cursor: default;
-    opacity: 0.5;
 }
