@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./signUpForm.scss";
 import googleIcon from "../images/SignUpImages/googleIcon.png";
 import InputField from "../components/SignUpTaskComponents/InputField";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 const SignUpForm: React.FC = () => {
   const [signWithEmail, setSignWithEmail] = useState<boolean>(false);
@@ -46,7 +48,7 @@ const SignUpForm: React.FC = () => {
         );
     const hasErrors = Object.values(errors).some((error) => !!error);
     const isValidForm = !hasMissingValues && !hasErrors;
-    
+
     setIsValid(isValidForm);
   }, [formData, errors]);
 
@@ -138,20 +140,30 @@ const SignUpForm: React.FC = () => {
             <span className="agreementLink"> E-Sign consent Agreement</span>
           </label>
         </div>
-        <button
-          type="submit"
-          className={`continueButton ${!isValid ? "disabled" : ""}`}
-          disabled={!isValid}
-        >
-          {signWithEmail ? (
-            "Continue"
-          ) : (
-            <div className="continueWithGoogle">
-              <img src={googleIcon} className="googleIcon" alt="googleIcon" />
-              Continue with Google
-            </div>
-          )}
-        </button>
+
+        {!signWithEmail ? (
+          <button
+            type="submit"
+            className={`continueButton continueButtonWithGoogle ${
+              !isValid ? "disabledContinueButtonWithGoogle" : ""
+            }`}
+            disabled={!isValid}
+          >
+            <img src={googleIcon} className="googleIcon" alt="googleIcon" />
+            Continue with Google
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className={`continueButton continueButtonWithEmail ${
+              !isValid ? "disabledContinueButtonWithEmail" : ""
+            }`}
+            disabled={!isValid}
+          >
+            Continue
+            <FontAwesomeIcon icon={faArrowRight} className="arrowIcon"/>
+          </button>
+        )}
       </form>
       <div className="hrContainer">
         <hr />

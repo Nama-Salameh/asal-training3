@@ -40,23 +40,36 @@
     .continueButton {
       width: 100%;
       margin: 30px 0;
-      border: 1px solid #007bff;
       border-radius: 5px;
-      background-color: white;
-      color: #007bff;
       padding: 10px;
       font-size: 16px;
-    }
-    .continueWithGoogle {
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .continueButtonWithGoogle {
+      border: 1px solid #007bff;
+      background-color: white;
+      color: #007bff;
       .googleIcon {
         width: 30px;
         margin-right: 10px;
       }
     }
-    .disabled {
+    .continueButtonWithEmail {
+      border: 1px solid #007bff;
+      background-color: #007bff;
+      color: white;
+      .arrowIcon {
+        margin-left: 10px;
+      }
+    }
+    .disabledContinueButtonWithEmail {
+      background-color: grey;
+      color: white;
+      cursor: default;
+    }
+    .disabledContinueButtonWithGoogle {
       cursor: default;
       opacity: 0.5;
     }
