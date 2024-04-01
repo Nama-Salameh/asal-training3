@@ -1,30 +1,27 @@
-.signUpForm {
+.signUpFormContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: #636363;
-  h2 {
+  border-radius: 10px;
+  background-color: white;
+  padding: 10px 20px 15px 20px;
+  margin-top: 10px;
+  .title {
     color: black;
+    margin-bottom: 0;
   }
-  button {
+  .button {
     cursor: pointer;
   }
-  form {
-    width: 100%;
-
+  .signUpForm {
     .inlineInputContainer {
       display: flex;
       gap: 10px;
-      width: 100%;
-      padding: 0;
-      margin: 0;
       .inputDiv {
         width: 100%;
       }
-    }
-    .emailSignUpContainer {
-      width: 100%;
     }
     .checkboxContanier {
       margin: 20px 0;
@@ -57,20 +54,25 @@
       }
     }
     .continueButtonWithEmail {
-      border: 1px solid #007bff;
       background-color: #007bff;
+      border: 1px solid #007bff;
       color: white;
       .arrowIcon {
         margin-left: 10px;
       }
     }
+    .disabledContinueButtonWithEmail,
+    .disabledContinueButtonWithGoogle {
+      cursor: default;
+    }
     .disabledContinueButtonWithEmail {
       background-color: grey;
       color: white;
-      cursor: default;
+      .arrowIcon {
+        margin-left: 10px;
+      }
     }
     .disabledContinueButtonWithGoogle {
-      cursor: default;
       opacity: 0.5;
     }
   }
@@ -86,10 +88,6 @@
       height: 1px;
       background-color: #ccc;
       margin: 0 10px;
-    }
-    span {
-      font-size: 16px;
-      color: #999;
     }
   }
   .changeButton {

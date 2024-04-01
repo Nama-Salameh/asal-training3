@@ -10,18 +10,15 @@ const SignUpForm: React.FC = () => {
   const [formData, setFormData] = useState<{ [key: string]: string }>({});
   const [isValid, setIsValid] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  //   const [submittedData, setSubmittedData] = useState<{ [key: string]: string }>(
-  //     {}
-  //   );
 
   const handleValidation = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = event.target;
+    const newValue = type === "checkbox" ? checked.toString() : value;
+    setFormData({ ...formData, [name]: newValue });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    //setSubmittedData(formData);
     console.log("Form submitted!", formData);
   };
 
@@ -40,26 +37,24 @@ const SignUpForm: React.FC = () => {
     ];
 
     const hasMissingValues = signWithEmail
-      ? requiredFieldsForSignWithEmail.some(
-          (field) => !formData[field] && field !== "middleName"
-        )
-      : requiredFieldsForSignWithGoogle.some(
-          (field) => !formData[field] && field !== "middleName"
-        );
+      ? requiredFieldsForSignWithEmail.some((field) => !formData[field])
+      : requiredFieldsForSignWithGoogle.some((field) => !formData[field]);
     const hasErrors = Object.values(errors).some((error) => !!error);
-    const isValidForm = !hasMissingValues && !hasErrors;
+    const isAgreementChecked = formData.agreement === "true";
+
+    const isValidForm = !hasMissingValues && !hasErrors && isAgreementChecked;
 
     setIsValid(isValidForm);
   }, [formData, errors]);
 
   return (
-    <div className="signUpForm">
-      <h2>Welcome!</h2>
+    <div className="signUpFormContainer">
+      <h2 className="title">Welcome!</h2>
       <p>
         Applying for a Jasper Mastercard is quick and easy, let's get you on
         board.
       </p>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="signUpForm">
         <div className="inlineInputContainer">
           <div className="inputDiv">
             <InputField
@@ -103,7 +98,7 @@ const SignUpForm: React.FC = () => {
           setErrors={setErrors}
         />
         {signWithEmail && (
-          <div className="emailSignUpContainer">
+          <div>
             <InputField
               name="email"
               placeholder="Enter your e-mail address"
@@ -130,12 +125,11 @@ const SignUpForm: React.FC = () => {
           <input
             type="checkbox"
             name="agreement"
-            value="agree"
             className="agreementCheckbox"
             required
             onChange={handleValidation}
           />
-          <label htmlFor="agreement">
+          <label htmlFor="agreement" className="agreementLabel">
             By checking this box, you are accepting the terms of the
             <span className="agreementLink"> E-Sign consent Agreement</span>
           </label>
@@ -144,9 +138,7 @@ const SignUpForm: React.FC = () => {
         {!signWithEmail ? (
           <button
             type="submit"
-            className={`continueButton continueButtonWithGoogle ${
-              !isValid ? "disabledContinueButtonWithGoogle" : ""
-            }`}
+            className={"continueButton continueButtonWithGoogle button"}
             disabled={!isValid}
           >
             <img src={googleIcon} className="googleIcon" alt="googleIcon" />
@@ -155,13 +147,15 @@ const SignUpForm: React.FC = () => {
         ) : (
           <button
             type="submit"
-            className={`continueButton continueButtonWithEmail ${
-              !isValid ? "disabledContinueButtonWithEmail" : ""
+            className={`continueButton  button ${
+              !isValid
+                ? "disabledContinueButtonWithEmail"
+                : "continueButtonWithEmail"
             }`}
             disabled={!isValid}
           >
             Continue
-            <FontAwesomeIcon icon={faArrowRight} className="arrowIcon"/>
+            <FontAwesomeIcon icon={faArrowRight} className="arrowIcon" />
           </button>
         )}
       </form>
@@ -171,24 +165,11 @@ const SignUpForm: React.FC = () => {
         <hr />
       </div>
       <button
-        className="changeButton"
+        className="changeButton button"
         onClick={() => setSignWithEmail(!signWithEmail)}
       >
         {signWithEmail ? "Sign up with google" : "Sign up with e-mail"}
       </button>
-
-      {/* {Object.keys(submittedData).length > 0 && (
-        <div className="submittedData">
-          <h3>Submitted Data:</h3>
-          <ul>
-            {Object.entries(submittedData).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )} */}
     </div>
   );
 };
