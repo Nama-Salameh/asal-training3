@@ -26,36 +26,39 @@ const InputField: React.FC<InputFieldProps> = ({
   setErrors,
 }) => {
   const [error, setError] = useState<string>("");
-
+  
   const handleValidation = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { validity } = event.target;
-
     let errorMessage = "";
-
-    if (validity.valueMissing) {
-      errorMessage = "Required!";
-    } else if (validity.tooShort) {
-      errorMessage = "Too short!";
-    } else if (validity.typeMismatch) {
-      if (name === "email") {
+  
+    switch (true) {
+      case validity.valueMissing:
+        errorMessage = "Required!";
+        break;
+      case validity.tooShort:
+        errorMessage = "Too short!";
+        break;
+      case validity.typeMismatch && name === "email":
         errorMessage = "Please enter a valid email";
-      }
-    } else if (validity.patternMismatch) {
-      if (name === "password") {
+        break;
+      case validity.patternMismatch && name === "password":
         errorMessage = "Enter a valid password";
-      } else if (
-        name === "firstName" ||
-        name === "lastName" ||
-        name === "middleName"
-      ) {
+        break;
+      case (
+        validity.patternMismatch &&
+        (name === "firstName" || name === "lastName" || name === "middleName")
+      ):
         errorMessage = "Please enter a valid name";
-      }
+        break;
+      default:
+        break;
     }
-
+  
     setError(errorMessage);
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
     onChange(event);
   };
+  
 
   return (
     <div className="inputContainer">

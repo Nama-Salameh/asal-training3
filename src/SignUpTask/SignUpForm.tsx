@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import "./signUpForm.scss";
-import googleIcon from "../images/SignUpImages/googleIcon.png";
-import InputField from "../components/SignUpTaskComponents/InputField";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import InputField from "../components/SignUpTaskComponents/InputField";
+import googleIcon from "../images/SignUpImages/googleIcon.png";
+import "./signUpForm.scss";
 
 const SignUpForm: React.FC = () => {
   const [signWithEmail, setSignWithEmail] = useState<boolean>(false);
