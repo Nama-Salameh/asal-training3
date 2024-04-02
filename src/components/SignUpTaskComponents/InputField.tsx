@@ -35,7 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({
       case validity.valueMissing:
         errorMessage = "Required!";
         break;
-      case validity.typeMismatch && name === "email":
+      case (validity.typeMismatch && name === "email") || (validity.patternMismatch && name ==="email"):
         errorMessage = "Please enter a valid email";
         break;
       case validity.patternMismatch && name === "password":
