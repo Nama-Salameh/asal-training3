@@ -5,65 +5,79 @@ import googleIcon from "../images/SignUpImages/googleIcon.png";
 import rightArrowIcon from "../images/SignUpImages/rightArrowIcon.png";
 import "./signUpForm.scss";
 
-const inputInfo = {
-  firstName: {
-    name: "firstName",
-    placeholder: "First Name *",
-    required: true,
-    minLength: 3,
-    pattern: "[a-zA-Zs]+",
-  },
-  middleName: {
-    name: "middleName",
-    placeholder: "Middle Name",
-    pattern: "[a-zA-Zs]+",
-  },
-  lastName: {
-    name: "lastName",
-    placeholder: "Last Name *",
-    required: true,
-    minLength: 3,
-    pattern: "[a-zA-Zs]+",
-  },
-  promoCode: {
-    name: "promoCode",
-    placeholder: "Promo Code (optional)",
-    minLength: 8,
-  },
-  email: {
-    name: "email",
-    placeholder: "Enter your e-mail address",
-    type: "email",
-    required: true,
-    pattern: "^[^@]+@[^@]+\\.[^@]+$",
-  },
-  password: {
-    name: "password",
-    placeholder: "Create password",
-    type: "password",
-    required: true,
-    minLength: 8,
-    pattern: "^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$",
-  },
-  agreement: {
-    type: "checkbox",
-    name: "agreement",
-    className: "agreementCheckbox",
-    required: true,
-  },
-};
-
 const SignUpForm: React.FC = () => {
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [signWithEmail, setSignWithEmail] = useState<boolean>(false);
   const [formData, setFormData] = useState<{ [key: string]: string }>({});
   const [isValid, setIsValid] = useState<boolean>(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handleValidation = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const inputInfo = {
+    firstName: {
+      name: "firstName",
+      placeholder: "First Name *",
+      required: true,
+      minLength: 3,
+      pattern: "[a-zA-Zs]+",
+      onChange: handleValidation,
+      setErrors: setErrors,
+    },
+    middleName: {
+      name: "middleName",
+      placeholder: "Middle Name",
+      pattern: "[a-zA-Zs]+",
+      onChange: handleValidation,
+      setErrors: setErrors,
+    },
+    lastName: {
+      name: "lastName",
+      placeholder: "Last Name *",
+      required: true,
+      minLength: 3,
+      pattern: "[a-zA-Zs]+",
+      onChange: handleValidation,
+      setErrors: setErrors,
+    },
+    promoCode: {
+      name: "promoCode",
+      placeholder: "Promo Code (optional)",
+      minLength: 8,
+      onChange: handleValidation,
+      setErrors: setErrors,
+    },
+    email: {
+      name: "email",
+      placeholder: "Enter your e-mail address",
+      type: "email",
+      required: true,
+      pattern: "^[^@]+@[^@]+\\.[^@]+$",
+      onChange: handleValidation,
+      setErrors: setErrors,
+    },
+    password: {
+      name: "password",
+      placeholder: "Create password",
+      type: "password",
+      required: true,
+      minLength: 8,
+      pattern: "^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$",
+      onChange: handleValidation,
+      setErrors: setErrors,
+    },
+    agreement: {
+      type: "checkbox",
+      name: "agreement",
+      className: "agreementCheckbox",
+      required: true,
+      onChange: handleValidation,
+      setErrors: setErrors,
+    },
+  };
+
+  function handleValidation(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = event.target;
     const newValue = type === "checkbox" ? checked.toString() : value;
     setFormData({ ...formData, [name]: newValue });
-  };
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -81,15 +95,10 @@ const SignUpForm: React.FC = () => {
       "email",
       "password",
     ];
-    const requiredFieldsForSignWithGoogle = [
-      "firstName",
-      "lastName",
-      "agreement",
-    ];
 
     const hasMissingValues = signWithEmail
       ? requiredFieldsForSignWithEmail.some((field) => !formData[field])
-      : requiredFieldsForSignWithGoogle.some((field) => !formData[field]);
+      : false;
     const hasErrors = Object.values(errors).some((error) => !!error);
     const isAgreementChecked = formData.agreement === "true";
 
@@ -108,58 +117,26 @@ const SignUpForm: React.FC = () => {
       <form onSubmit={handleSubmit} className="signUpForm">
         <div className="inlineInputContainer">
           <div className="inputDiv">
-            <InputField
-              {...inputInfo["firstName"]}
-              onChange={handleValidation}
-              value={formData["firstName"] || ""}
-              setErrors={setErrors}
-            />
+            <InputField {...inputInfo["firstName"]} />
           </div>
           <div className="inputDiv">
-            <InputField
-              {...inputInfo["middleName"]}
-              onChange={handleValidation}
-              value={formData["middleName"] || ""}
-              setErrors={setErrors}
-            />
+            <InputField {...inputInfo["middleName"]} />
           </div>
         </div>
-        <InputField
-          {...inputInfo["lastName"]}
-          onChange={handleValidation}
-          value={formData["lastName"] || ""}
-          setErrors={setErrors}
-        />
-        <InputField
-          {...inputInfo["promoCode"]}
-          onChange={handleValidation}
-          value={formData["promoCode"] || ""}
-          setErrors={setErrors}
-        />
+        <InputField {...inputInfo["lastName"]} />
+        <InputField {...inputInfo["promoCode"]} />
         {signWithEmail && (
           <div>
-            <InputField
-              {...inputInfo["email"]}
-              onChange={handleValidation}
-              value={formData["email"] || ""}
-              setErrors={setErrors}
-            />
+            <InputField {...inputInfo["email"]} />
             <InputField
               {...inputInfo["password"]}
-              onChange={handleValidation}
-              value={formData["password"] || ""}
-              setErrors={setErrors}
               firstName={formData["firstName"]}
               lastName={formData["lastName"]}
             />
           </div>
         )}
         <div className="checkboxContainer">
-          <input
-            {...inputInfo["agreement"]}
-            className="agreementCheckbox"
-            onChange={handleValidation}
-          />
+          <input {...inputInfo["agreement"]} className="agreementCheckbox" />
           <label htmlFor="agreement" className="agreementLabel">
             By checking this box, you are accepting the terms of the
             <span className="agreementLink"> E-Sign consent Agreement</span>
