@@ -12,6 +12,8 @@ interface InputFieldProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+  firstName?: string;
+  lastName?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -24,6 +26,8 @@ const InputField: React.FC<InputFieldProps> = ({
   onChange,
   value,
   setErrors,
+  firstName,
+  lastName,
 }) => {
   const [error, setError] = useState<string>("");
 
@@ -35,7 +39,8 @@ const InputField: React.FC<InputFieldProps> = ({
       case validity.valueMissing:
         errorMessage = "Required!";
         break;
-      case (validity.typeMismatch && name === "email") || (validity.patternMismatch && name ==="email"):
+      case (validity.typeMismatch && name === "email") ||
+        (validity.patternMismatch && name === "email"):
         errorMessage = "Please enter a valid email";
         break;
       case validity.patternMismatch && name === "password":
@@ -50,6 +55,20 @@ const InputField: React.FC<InputFieldProps> = ({
         break;
       default:
         break;
+    }
+
+    if (name === "password") {
+      if (
+        (firstName &&
+          value
+            .toLowerCase()
+            .trim()
+            .includes(firstName.toLowerCase().trim())) ||
+        (lastName &&
+          value.toLowerCase().trim().includes(lastName.toLowerCase().trim()))
+      ) {
+        errorMessage = "Password cannot include your first or last name";
+      }
     }
 
     setError(errorMessage);

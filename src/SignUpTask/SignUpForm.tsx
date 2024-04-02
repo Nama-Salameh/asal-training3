@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import InputField from "../components/SignUpTaskComponents/InputField";
 import googleIcon from "../images/SignUpImages/googleIcon.png";
 import "./signUpForm.scss";
+import bcrypt from "bcryptjs";
 
 const inputInfo = {
   firstName: {
@@ -35,7 +36,7 @@ const inputInfo = {
     placeholder: "Enter your e-mail address",
     type: "email",
     required: true,
-    pattern: "^[^s@]+@[^s@]+\\.[^s@]+$",
+    pattern: "^[^@]+@[^@]+\\.[^@]+$",
   },
   password: {
     name: "password",
@@ -68,6 +69,9 @@ const SignUpForm: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Form submitted!", formData);
+    const encryptedPass = bcrypt.hashSync(formData["password"]);
+    formData["password"] = encryptedPass;
+    console.log("Form submitted with encryption!", formData);
   };
 
   useEffect(() => {
@@ -146,6 +150,8 @@ const SignUpForm: React.FC = () => {
               onChange={handleValidation}
               value={formData["password"] || ""}
               setErrors={setErrors}
+              firstName={formData["firstName"]}
+              lastName={formData["lastName"]}
             />
           </div>
         )}
