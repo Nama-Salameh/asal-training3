@@ -1,10 +1,9 @@
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import bcrypt from "bcryptjs";
 import React, { useEffect, useState } from "react";
 import InputField from "../components/SignUpTaskComponents/InputField";
 import googleIcon from "../images/SignUpImages/googleIcon.png";
+import rightArrowIcon from "../images/SignUpImages/rightArrowIcon.png";
 import "./signUpForm.scss";
-import bcrypt from "bcryptjs";
 
 const inputInfo = {
   firstName: {
@@ -187,7 +186,11 @@ const SignUpForm: React.FC = () => {
             disabled={!isValid}
           >
             Continue
-            <FontAwesomeIcon icon={faArrowRight} className="arrowIcon" />
+            <img
+              src={rightArrowIcon}
+              className="arrowIcon"
+              alt="Right arrow icon"
+            />
           </button>
         )}
       </form>
