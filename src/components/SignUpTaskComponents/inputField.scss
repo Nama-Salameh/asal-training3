@@ -1,0 +1,28 @@
+.inputContainer {
+  .textInput {
+    border: 1px solid rgb(189, 187, 187);
+    border-radius: 3px;
+    padding: 15px 15px;
+    width: calc(100% - 30px);
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  .errorIcon {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+  }
+  .errorMessage {
+    color: red;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .validEmailMessage{
+    color: black;
+  }
+  .notValidInput {
+    border: 1px solid red;
+  }
+}

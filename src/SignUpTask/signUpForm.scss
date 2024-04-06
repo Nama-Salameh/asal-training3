@@ -1,0 +1,104 @@
+.signUpFormContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #636363;
+  border-radius: 10px;
+  background-color: white;
+  padding: 10px 20px 15px 20px;
+  margin-top: 10px;
+  .title {
+    color: black;
+    margin-bottom: 0;
+  }
+  .button {
+    cursor: pointer;
+  }
+  .signUpForm {
+    .inlineInputContainer {
+      display: flex;
+      gap: 10px;
+      .inputDiv {
+        width: 100%;
+      }
+    }
+    .checkboxContanier {
+      margin: 20px 0;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .agreementCheckbox {
+        margin-right: 8px;
+        cursor: pointer;
+      }
+    }
+    .continueButton {
+      width: 100%;
+      margin: 30px 0;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .continueButtonWithGoogle {
+      border: 1px solid #007bff;
+      background-color: white;
+      color: #007bff;
+      .googleIcon {
+        width: 30px;
+        margin-right: 10px;
+      }
+    }
+    .continueButtonWithEmail {
+      background-color: #007bff;
+      border: 1px solid #007bff;
+      color: white;
+      .arrowIcon {
+        margin-left: 10px;
+      }
+    }
+    .disabledContinueButtonWithEmail,
+    .disabledContinueButtonWithGoogle {
+      cursor: default;
+    }
+    .disabledContinueButtonWithEmail {
+      background-color: grey;
+      color: white;
+      .arrowIcon {
+        margin-left: 10px;
+      }
+    }
+    .disabledContinueButtonWithGoogle {
+      opacity: 0.5;
+    }
+  }
+  .hrContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 25px;
+    hr {
+      flex-grow: 1;
+      border: none;
+      height: 1px;
+      background-color: #ccc;
+      margin: 0 10px;
+    }
+  }
+  .changeButton {
+    border: none;
+    background-color: white;
+    color: #007bff;
+    text-decoration: underline;
+    font-size: 16px;
+  }
+}
+.agreementLink {
+  text-decoration: underline;
+  cursor: pointer;
+}
