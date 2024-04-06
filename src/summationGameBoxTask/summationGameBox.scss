@@ -1,0 +1,50 @@
+.summationGameBoxContainer {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  background-color: white;
+  border: 1px solid #b0b0b0e6;
+  border-radius: 10px;
+  padding: 20px;
+  color: #404043;
+
+  .equationContainer {
+    width: 70%;
+    background-color: #e1e1e160;
+    border-radius: 10px;
+    border: 1px solid #c1c1c1c4;
+    padding: 60px;
+    margin-bottom: 60px;
+    font-size: 30px;
+    font-weight: 500;
+  }
+  .resultButtonsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    .resultButton {
+      padding: 10px 40px;
+      height: 50px;
+    }
+  }
+  .resultContainer {
+    font-size: 17px;
+    .resetButton {
+      padding: 5px 20px;
+      height: 30px;
+      font-size: 16px;
+    }
+  }
+  .button {
+    cursor: pointer;
+    background-color: #cecece91;
+    border: 1px solid #c5c5c5;
+    border-radius: 6px;
+    font-size: 18px;
+  }
+}
