@@ -67,11 +67,11 @@ const SummationGameBox: React.FC = () => {
     ]);
     if (counters.roundCounter !== 5) {
       setValues();
-      setCounters((prevCounters) => ({
-        ...prevCounters,
-        roundCounter: prevCounters.roundCounter + 1,
-      }));
     }
+    setCounters((prevCounters) => ({
+      ...prevCounters,
+      roundCounter: prevCounters.roundCounter + 1,
+    }));
   };
 
   const handleResetClick = () => {
@@ -91,12 +91,14 @@ const SummationGameBox: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (counters.roundCounter === 5 && counters.correct === 5) {
-      setMessage("All guesses are correct!");
-      setResetButtonDisplayed(true);
-    } else if (counters.roundCounter === 5 && counters.wrong !== 0) {
-      setMessage("Try guessing again");
-      setDisplayEquations(true);
+    if (counters.roundCounter === 6) {
+      if (counters.correct === 5) {
+        setMessage("All guesses are correct!");
+        setResetButtonDisplayed(true);
+      } else if (counters.roundCounter === 6 && counters.wrong !== 0) {
+        setMessage("Try guessing again");
+        setDisplayEquations(true);
+      }
     }
   }, [counters]);
 
@@ -118,7 +120,7 @@ const SummationGameBox: React.FC = () => {
             </button>
           ))}
       </div>
-      <p>Round: {counters.roundCounter}</p>
+      {counters.roundCounter <= 5 && <p>Round: {counters.roundCounter}</p>}
 
       <div className="resultContainer">
         <p>{message} </p>
