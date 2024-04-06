@@ -31,9 +31,10 @@ const SummationGameBox: React.FC = () => {
       generateRandomNumber(1, 20)
     );
     setNumbers(newNumbers);
-    setResult(newNumbers[0] + newNumbers[1]);
-    const firstResult = generateRandomNumber(1, 50, [result]);
-    const secondResult = generateRandomNumber(1, 50, [result, firstResult]);
+    const newResult = newNumbers[0] + newNumbers[1];
+    setResult(newResult);
+    const firstResult = generateRandomNumber(1, 50, [newResult]);
+    const secondResult = generateRandomNumber(1, 50, [newResult, firstResult]);
     setRandomResults([firstResult, secondResult]);
   };
 
@@ -49,11 +50,13 @@ const SummationGameBox: React.FC = () => {
         wrong: prevCounters.wrong + 1,
       }));
     }
-    setValues();
-    setCounters((prevCounters) => ({
-      ...prevCounters,
-      roundCounter: prevCounters.roundCounter + 1,
-    }));
+    if (counters.roundCounter !== 5) {
+      setValues();
+      setCounters((prevCounters) => ({
+        ...prevCounters,
+        roundCounter: prevCounters.roundCounter + 1,
+      }));
+    }
   };
 
   const handleResetClick = () => {
@@ -77,7 +80,7 @@ const SummationGameBox: React.FC = () => {
       setTimeout(() => {
         handleResetClick();
       }, 4000);
-    } else if (counters.roundCounter === 6 && counters.correct === 5) {
+    } else if (counters.roundCounter === 5 && counters.correct === 5) {
       setMessage("All guesses are correct!");
       setResetButtonDisplayed(true);
     }
