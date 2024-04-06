@@ -19,7 +19,7 @@
     border-radius: 10px;
     border: 1px solid #c1c1c1c4;
     padding: 60px;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
     font-size: 30px;
     font-weight: 500;
   }
@@ -46,5 +46,36 @@
     border: 1px solid #c5c5c5;
     border-radius: 6px;
     font-size: 18px;
+  }
+
+  .equationsContainer {
+    border: 1px solid #c5c5c5;
+    width: 70%;
+    .equation {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      .wrongEquation,
+      .correctEquation {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 15px;
+
+        .wrongIcon,
+        .correctIcon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+      .wrongEquation {
+        color: red;
+      }
+      .correctEquation {
+        color: green;
+      }
+    }
   }
 }

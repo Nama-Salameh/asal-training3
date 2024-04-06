@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./summationGameBox.scss";
-
+import wrongIcon from "../images/SummationGameBoxImages/wrong.png";
+import CorrectIcon from "../images/SummationGameBoxImages/correct.png";
+interface equation {
+  num1: number;
+  num2: number;
+  result: number;
+  selectedResult: number;
+  isCorrect: boolean;
+}
 const SummationGameBox: React.FC = () => {
   const [numbers, setNumbers] = useState<number[]>([]);
   const [randomResults, setRandomResults] = useState<number[]>([]);
@@ -13,6 +21,8 @@ const SummationGameBox: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [resetButtonDisplayed, setResetButtonDisplayed] =
     useState<boolean>(false);
+  const [equations, setEquations] = useState<equation[]>([]);
+  const [displayEquations, setDisplayEquations] = useState<boolean>(false);
 
   const generateRandomNumber = (
     min: number,
@@ -39,17 +49,22 @@ const SummationGameBox: React.FC = () => {
   };
 
   const handleClick = (value: number) => {
-    if (value === result) {
-      setCounters((prevCounters) => ({
-        ...prevCounters,
-        correct: prevCounters.correct + 1,
-      }));
-    } else {
-      setCounters((prevCounters) => ({
-        ...prevCounters,
-        wrong: prevCounters.wrong + 1,
-      }));
-    }
+    const isCorrect = value === result;
+    setCounters((prevCounters) => ({
+      ...prevCounters,
+      [isCorrect ? "correct" : "wrong"]:
+        prevCounters[isCorrect ? "correct" : "wrong"] + 1,
+    }));
+    setEquations((prevEquations) => [
+      ...prevEquations,
+      {
+        num1: numbers[0],
+        num2: numbers[1],
+        result: result,
+        selectedResult: value,
+        isCorrect: isCorrect,
+      },
+    ]);
     if (counters.roundCounter !== 5) {
       setValues();
       setCounters((prevCounters) => ({
@@ -63,6 +78,7 @@ const SummationGameBox: React.FC = () => {
     setCounters((prevCounters) => ({ ...prevCounters, correct: 0, wrong: 0 }));
     setMessage("");
     setResetButtonDisplayed(false);
+    setEquations([]);
     setValues();
     setCounters((prevCounters) => ({
       ...prevCounters,
@@ -75,14 +91,12 @@ const SummationGameBox: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (counters.wrong !== 0) {
-      setMessage("Try guessing again");
-      setTimeout(() => {
-        handleResetClick();
-      }, 4000);
-    } else if (counters.roundCounter === 5 && counters.correct === 5) {
+    if (counters.roundCounter === 5 && counters.correct === 5) {
       setMessage("All guesses are correct!");
       setResetButtonDisplayed(true);
+    } else if (counters.roundCounter === 5 && counters.wrong !== 0) {
+      setMessage("Try guessing again");
+      setDisplayEquations(true);
     }
   }, [counters]);
 
@@ -114,6 +128,35 @@ const SummationGameBox: React.FC = () => {
           </button>
         )}
       </div>
+      {displayEquations && (
+        <div className="equationsContainer">
+          <h4>Your wrong guessess : </h4>
+          {equations
+            .filter((equation) => !equation.isCorrect)
+            .map((equation, index) => (
+              <div key={index} className="equation">
+                <div className="wrongEquation">
+                  <p>
+                    {equation.num1} + {equation.num2} ={" "}
+                    {equation.selectedResult}
+                  </p>
+                  <img src={wrongIcon} alt="Wrong icon" className="wrongIcon" />
+                </div>
+                but should
+                <div className="correctEquation">
+                  <p className="correct">
+                    {equation.num1} + {equation.num2} = {equation.result}
+                  </p>
+                  <img
+                    src={CorrectIcon}
+                    alt="Correct icon"
+                    className="correctIcon"
+                  />
+                </div>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };
