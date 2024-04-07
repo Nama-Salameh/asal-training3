@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./summationGameBox.scss";
-import wrongIcon from "../images/SummationGameBoxImages/wrong.png";
 import CorrectIcon from "../images/SummationGameBoxImages/correct.png";
+import wrongIcon from "../images/SummationGameBoxImages/wrong.png";
+import "./summationGameBox.scss";
+
 interface equation {
   num1: number;
   num2: number;
@@ -9,6 +10,7 @@ interface equation {
   selectedResult: number;
   isCorrect: boolean;
 }
+
 const SummationGameBox: React.FC = () => {
   const [numbers, setNumbers] = useState<number[]>([]);
   const [randomResults, setRandomResults] = useState<number[]>([]);
@@ -22,7 +24,7 @@ const SummationGameBox: React.FC = () => {
   const [resetButtonDisplayed, setResetButtonDisplayed] =
     useState<boolean>(false);
   const [equations, setEquations] = useState<equation[]>([]);
-  const [displayEquations, setDisplayEquations] = useState<boolean>(false);
+  const [equationsDisplay, setEquationsDisplay] = useState<boolean>(false);
 
   const generateRandomNumber = (
     min: number,
@@ -40,12 +42,15 @@ const SummationGameBox: React.FC = () => {
     const newNumbers = Array.from({ length: 2 }, () =>
       generateRandomNumber(1, 20)
     );
-    setNumbers(newNumbers);
     const newResult = newNumbers[0] + newNumbers[1];
+    const firstRandomResult = generateRandomNumber(1, 50, [newResult]);
+    const secondRandomResult = generateRandomNumber(1, 50, [
+      newResult,
+      firstRandomResult,
+    ]);
+    setNumbers(newNumbers);
     setResult(newResult);
-    const firstResult = generateRandomNumber(1, 50, [newResult]);
-    const secondResult = generateRandomNumber(1, 50, [newResult, firstResult]);
-    setRandomResults([firstResult, secondResult]);
+    setRandomResults([firstRandomResult, secondRandomResult]);
   };
 
   const handleClick = (value: number) => {
@@ -75,15 +80,11 @@ const SummationGameBox: React.FC = () => {
   };
 
   const handleResetClick = () => {
-    setCounters((prevCounters) => ({ ...prevCounters, correct: 0, wrong: 0 }));
+    setCounters({ roundCounter: 1, correct: 0, wrong: 0 });
     setMessage("");
     setResetButtonDisplayed(false);
     setEquations([]);
     setValues();
-    setCounters((prevCounters) => ({
-      ...prevCounters,
-      roundCounter: 1,
-    }));
   };
 
   useEffect(() => {
@@ -91,13 +92,13 @@ const SummationGameBox: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (counters.roundCounter === 6) {
+    if (counters.roundCounter > 5) {
       if (counters.correct === 5) {
         setMessage("All guesses are correct!");
         setResetButtonDisplayed(true);
-      } else if (counters.roundCounter === 6 && counters.wrong !== 0) {
+      } else if (counters.wrong !== 0) {
         setMessage("Try guessing again");
-        setDisplayEquations(true);
+        setEquationsDisplay(true);
       }
     }
   }, [counters]);
@@ -130,7 +131,8 @@ const SummationGameBox: React.FC = () => {
           </button>
         )}
       </div>
-      {displayEquations && (
+
+      {equationsDisplay && (
         <div className="equationsContainer">
           <h4>Your wrong guessess : </h4>
           {equations
