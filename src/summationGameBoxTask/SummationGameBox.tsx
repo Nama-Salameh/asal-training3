@@ -103,7 +103,7 @@ const SummationGameBox: React.FC = () => {
 
   return (
     <div className="summationGameBoxContainer">
-      {counters.roundCounter <= 5 && (
+      {counters.roundCounter <= 5 ? (
         <div className="container">
           <div className="equationContainer">
             {numbers[0]} + {numbers[1]}
@@ -123,9 +123,7 @@ const SummationGameBox: React.FC = () => {
           </div>
           <p>Round: {counters.roundCounter}</p>
         </div>
-      )}
-
-      {counters.roundCounter > 5 && (
+      ) : (
         <div className="container">
           <div className="resultContainer">
             <p>{message}</p>
