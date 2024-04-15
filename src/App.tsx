@@ -1,10 +1,10 @@
 import "./App.scss";
-import CountriesSelector from "./CountriesSelectorTask/CountriesSelector";
+import SummationGameBox from "./summationGameBoxTask/SummationGameBox";
 
 function App() {
   return (
     <div className="app">
-      <CountriesSelector />
+      <SummationGameBox />
     </div>
   );
 }
