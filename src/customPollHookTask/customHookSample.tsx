@@ -17,27 +17,29 @@ const CustomHookSample = () => {
     1500
   );
 
-  const formattedData = JSON.stringify({ data: data?.id, error: error || null }, null, 2);
+  const formattedData = JSON.stringify(
+    { data: data?.id, error: error || null },
+    null,
+    2
+  );
+
+  const handleStart = () => {
+    start();
+    setIsStartButtonDisabled(true);
+  };
+
+  const handleStop = () => {
+    stop();
+    setIsStartButtonDisabled(false);
+  };
 
   return (
     <div>
       <h1>usePoll</h1>
-      <button
-        onClick={() => {
-          start();
-          setIsStartButtonDisabled(true);
-        }}
-        disabled={isStartButtonDisabled}
-      >
+      <button onClick={handleStart} disabled={isStartButtonDisabled}>
         Start
       </button>
-      <button
-        onClick={() => {
-          stop();
-          setIsStartButtonDisabled(false);
-        }}
-        disabled={!isStartButtonDisabled}
-      >
+      <button onClick={handleStop} disabled={!isStartButtonDisabled}>
         Stop
       </button>
       <button onClick={trigger}>Trigger</button>
