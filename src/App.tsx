@@ -1,10 +1,10 @@
 import "./App.scss";
-import SummationGameBox from "./summationGameBoxTask/SummationGameBox";
+import CustomHookSample from "./customPollHookTask/customHookSample";
 
 function App() {
   return (
     <div className="app">
-      <SummationGameBox />
+      <CustomHookSample />
     </div>
   );
 }
