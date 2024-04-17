@@ -6,7 +6,7 @@ export default function usePoll<T>(
   refreshInterval: number
 ) {
   const [data, setData] = useState<T | null>();
-  const [error, setError] = useState<Error | null>();
+  const [error, setError] = useState<string | null>();
   const [isPolling, setIsPolling] = useState<boolean>(true);
 
   const fetchData = async () => {
@@ -16,7 +16,7 @@ export default function usePoll<T>(
       setError(null);
     } catch (error: any) {
       setData(null);
-      setError(error);
+      setError(error.toString());
     }
   };
 
@@ -30,7 +30,7 @@ export default function usePoll<T>(
       }
     }, refreshInterval);
     return () => clearInterval(intervalId);
-  }, [url, fetcher, refreshInterval, isPolling]);
+  }, [isPolling]);
 
   return { data, error, trigger: fetchData, start, stop };
 }

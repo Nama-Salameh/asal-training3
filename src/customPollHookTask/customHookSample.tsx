@@ -8,19 +8,13 @@ const CustomHookSample = () => {
     const response = await fetch(url);
     const data = await response.json();
     const randomId = Math.floor(Math.random() * data.length);
-    return data[randomId];
+    return data[randomId].id;
   };
 
   const { data, error, trigger, start, stop } = usePoll(
     "https://65f7f6dfb4f842e808867e5f.mockapi.io/Asal/movies",
     fetcher,
     1500
-  );
-
-  const formattedData = JSON.stringify(
-    { data: data?.id, error: error || null },
-    null,
-    2
   );
 
   const handleStart = () => {
@@ -43,7 +37,8 @@ const CustomHookSample = () => {
         Stop
       </button>
       <button onClick={trigger}>Trigger</button>
-      <p>{formattedData} </p>
+      <p>data: {data}</p>
+      <p>error: {error ?? "null"}</p>
     </div>
   );
 };
