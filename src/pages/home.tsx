@@ -1,11 +1,12 @@
 import { useState } from "react";
 import styles from "./home.module.scss";
+import localization from "../localizationConfig";
 
 export default function Home() {
   let email;
   if (typeof localStorage !== "undefined") {
-    if (localStorage.getItem("email")) {
-      email = localStorage.getItem("email");
+    if (localStorage.getItem(localization.email)) {
+      email = localStorage.getItem(localization.email);
     }
   }
 
@@ -13,7 +14,7 @@ export default function Home() {
   const splittedEmail = email?.split("@") ?? null;
 
   const handleSignOut = () => {
-    localStorage.removeItem("email");
+    localStorage.removeItem(localization.email);
     setIsSignedIn(false);
   };
 
@@ -23,11 +24,11 @@ export default function Home() {
         <div className={styles.topBar}>
           <h2>{splittedEmail[0]}</h2>
           <button className={styles.signOutButton} onClick={handleSignOut}>
-            Sign out
+            {localization.signOut}
           </button>
         </div>
       ) : (
-        <h2>Hello</h2>
+        <h2>{localization.hello}</h2>
       )}
     </div>
   );

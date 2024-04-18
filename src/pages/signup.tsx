@@ -6,6 +6,8 @@ import rightArrowIcon from "../images/SignUpImages/rightArrowIcon.png";
 import styles from "./signup.module.scss";
 import { GlobalContext } from "../store";
 import { useRouter } from "next/navigation";
+import localization from "../localizationConfig";
+import LanguageSelector from "../LanguageSelector";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -17,53 +19,53 @@ const SignUpForm: React.FC = () => {
 
   const inputInfo = {
     firstName: {
-      name: "firstName",
+      name: localization.firstName,
       placeholder: "First Name *",
       required: true,
       minLength: 3,
-      pattern: "[a-zA-Zs]+",
+      pattern: localization.namePattern,
       onChange: handleValidation,
     },
     middleName: {
-      name: "middleName",
+      name: localization.middleName,
       placeholder: "Middle Name",
-      pattern: "[a-zA-Zs]+",
+      pattern: localization.namePattern,
       onChange: handleValidation,
     },
     lastName: {
-      name: "lastName",
+      name: localization.lastName,
       placeholder: "Last Name *",
       required: true,
       minLength: 3,
-      pattern: "[a-zA-Zs]+",
+      pattern: localization.namePattern,
       onChange: handleValidation,
     },
     promoCode: {
-      name: "promoCode",
+      name: localization.promoCode,
       placeholder: "Promo Code (optional)",
       minLength: 8,
       onChange: handleValidation,
     },
     email: {
-      name: "email",
+      name: localization.email,
       placeholder: "Enter your e-mail address",
-      type: "email",
+      type: localization.email,
       required: true,
-      pattern: "^[^@]+@[^@]+\\.[^@]+$",
+      pattern: localization.emailPattern,
       onChange: handleValidation,
     },
     password: {
-      name: "password",
+      name: localization.password,
       placeholder: "Create password",
-      type: "password",
+      type: localization.password,
       required: true,
       minLength: 8,
-      pattern: "^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$",
+      pattern: localization.passwordPattern,
       onChange: handleValidation,
     },
     agreement: {
-      type: "checkbox",
-      name: "agreement",
+      type: localization.checkbox,
+      name: localization.agreement,
       required: true,
       onChange: handleValidation,
     },
@@ -71,7 +73,8 @@ const SignUpForm: React.FC = () => {
 
   function handleValidation(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = event.target;
-    const newValue = type === "checkbox" ? checked.toString() : value;
+    const newValue =
+      type === localization.checkbox ? checked.toString() : value;
     setFormData({ ...formData, [name]: newValue });
     dispatch({
       type: "set-input",
@@ -82,20 +85,20 @@ const SignUpForm: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Form submitted!", formData);
-    const encryptedPass = bcrypt.hashSync(formData["password"]);
-    formData["password"] = encryptedPass;
+    const encryptedPass = bcrypt.hashSync(formData[localization.password]);
+    formData[localization.password] = encryptedPass;
     console.log("Form submitted with encryption!", formData);
-    localStorage.setItem("email", formData["email"]);
+    localStorage.setItem(localization.email, formData[localization.email]);
     router.push("/home");
   };
 
   useEffect(() => {
     const requiredFieldsForSignWithEmail = [
-      "firstName",
-      "lastName",
-      "agreement",
-      "email",
-      "password",
+      localization.firstName,
+      localization.lastName,
+      localization.agreement,
+      localization.email,
+      localization.password,
     ];
 
     const hasMissingValues = signWithEmail
@@ -112,38 +115,37 @@ const SignUpForm: React.FC = () => {
   return (
     <div className={styles.signUpPage}>
       <div className={styles.signUpFormContainer}>
-        <h2 className={styles.title}>Welcome!</h2>
-        <p>
-          Applying for a Jasper Mastercard is quick and easy, let's get you on
-          board.
-        </p>
+        <h2 className={styles.title}>{localization.welcome}</h2>
+        <p>{localization.applyingMessage}</p>
         <form onSubmit={handleSubmit} className={styles.signUpForm}>
           <div className={styles.inlineInputContainer}>
             <div className={styles.inputDiv}>
-              <InputField {...inputInfo["firstName"]} />
+              <InputField {...inputInfo[localization.firstName]} />
             </div>
             <div className={styles.inputDiv}>
-              <InputField {...inputInfo["middleName"]} />
+              <InputField {...inputInfo[localization.middleName]} />
             </div>
           </div>
-          <InputField {...inputInfo["lastName"]} />
-          <InputField {...inputInfo["promoCode"]} />
+          <InputField {...inputInfo[localization.lastName]} />
+          <InputField {...inputInfo[localization.promoCode]} />
           {signWithEmail && (
             <div>
-              <InputField {...inputInfo["email"]} />
-              <InputField {...inputInfo["password"]} />
+              <InputField {...inputInfo[localization.email]} />
+              <InputField {...inputInfo[localization.password]} />
             </div>
           )}
           <div className={styles.checkboxContainer}>
             <input
-              {...inputInfo["agreement"]}
+              {...inputInfo[localization.agreement]}
               className={styles.agreementCheckbox}
             />
-            <label htmlFor="agreement" className={styles.agreementLabel}>
-              By checking this box, you are accepting the terms of the
+            <label
+              htmlFor={localization.agreement}
+              className={styles.agreementLabel}
+            >
+              {localization.acceptingTerms}
               <span className={styles.agreementLink}>
-                {" "}
-                E-Sign consent Agreement
+                {localization.eSignAgreement}
               </span>
             </label>
           </div>
@@ -157,9 +159,9 @@ const SignUpForm: React.FC = () => {
               <img
                 src={googleIcon.src}
                 className={styles.googleIcon}
-                alt="googleIcon"
+                alt={localization.googleIcon}
               />
-              Continue with Google
+              {localization.continueWithGoogle}
             </button>
           ) : (
             <button
@@ -171,25 +173,27 @@ const SignUpForm: React.FC = () => {
               }`}
               disabled={!isValid}
             >
-              Continue
+              {localization.continue}
               <img
                 src={rightArrowIcon.src}
                 className={styles.arrowIcon}
-                alt="Right arrow icon"
+                alt={localization.rightArrowIcon}
               />
             </button>
           )}
         </form>
         <div className={styles.hrContainer}>
           <hr />
-          <span>or</span>
+          <span>{localization.or}</span>
           <hr />
         </div>
         <button
           className={` ${styles.changeButton} ${styles.button}`}
           onClick={() => setSignWithEmail(!signWithEmail)}
         >
-          {signWithEmail ? "Sign up with google" : "Sign up with e-mail"}
+          {signWithEmail
+            ? localization.signWithGoogle
+            : localization.signWithEmail}
         </button>
       </div>
     </div>

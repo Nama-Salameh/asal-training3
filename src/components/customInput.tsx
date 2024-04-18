@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import errorIcon from "../images/SignUpImages/error.png";
 import { GlobalContext } from "../store";
 import styles from "./CustomInput.module.scss";
+import localization from "../localizationConfig";
 
 interface CustomInputProps {
   name: string;
@@ -32,27 +33,29 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
     switch (true) {
       case validity.valueMissing:
-        errorMessage = "Required!";
+        errorMessage = localization.requiredErrorMessage;
         break;
-      case (validity.typeMismatch && name === "email") ||
-        (validity.patternMismatch && name === "email"):
-        errorMessage = "Please enter a valid email";
+      case (validity.typeMismatch && name === localization.email) ||
+        (validity.patternMismatch && name === localization.email):
+        errorMessage = localization.validEmailErrorMessage;
         break;
-      case validity.patternMismatch && name === "password":
-        errorMessage = "Enter a valid password";
+      case validity.patternMismatch && name === localization.password:
+        errorMessage = localization.validPasswordErrorMessage;
         break;
       case validity.patternMismatch &&
-        (name === "firstName" || name === "lastName" || name === "middleName"):
-        errorMessage = "Please enter a valid name";
+        (name === localization.firstName ||
+          name === localization.lastName ||
+          name === localization.middleName):
+        errorMessage = localization.validNameErrorMessage;
         break;
       case validity.tooShort:
-        errorMessage = "Too short!";
+        errorMessage = localization.tooShortErrorMessage;
         break;
       default:
         break;
     }
 
-    if (name === "password") {
+    if (name === localization.password) {
       const { firstName, lastName } = state.data.userData;
       if (
         (firstName &&
@@ -63,7 +66,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         (lastName &&
           value.toLowerCase().trim().includes(lastName.toLowerCase().trim()))
       ) {
-        errorMessage = "Password cannot include your first or last name";
+        errorMessage = localization.passwordContainNameErrorMessage;
       }
     }
 
@@ -77,8 +80,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
       },
     });
 
-    if (name === "email" && errorMessage === "") {
-      setValidEmailMessage(`A verificaiton email will be sent to ${value}`);
+    if (name === localization.email && errorMessage === "") {
+      setValidEmailMessage(
+        `${localization.successVerificationEmailMessage} ${value}`
+      );
     }
     onChange(event);
   };
@@ -102,7 +107,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           <img
             src={errorIcon.src}
             className={styles.errorIcon}
-            alt="error icon"
+            alt={localization.errorIcon}
           />
           <span>{errorMessage}</span>
         </div>
