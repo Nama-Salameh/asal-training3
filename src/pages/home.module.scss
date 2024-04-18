@@ -1,0 +1,15 @@
+.homePage {
+  .topBar {
+    display: flex;
+    justify-content: space-between;
+  }
+  .signOutButton {
+    width: 150px;
+    font-size: 16px;
+    background-color: rgb(23, 6, 106);
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+}

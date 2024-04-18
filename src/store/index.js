@@ -1,6 +1,25 @@
 import { createContext, useReducer } from "react";
 
-const initialState = { data: "" };
+const initialState = {
+  data: {
+    userData: {
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      promoCode: "",
+    },
+    signUpErrorMessages: {
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      promoCode: "",
+    },
+  },
+};
 export const GlobalContext = createContext(initialState);
 
 const reducer = (state, action) => {
@@ -8,7 +27,7 @@ const reducer = (state, action) => {
     case "set-input": {
       return {
         ...state,
-        data: action.payload,
+        data: { ...state.data, ...action.payload },
       };
     }
     default: {
@@ -16,7 +35,6 @@ const reducer = (state, action) => {
     }
   }
 };
-
 const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
