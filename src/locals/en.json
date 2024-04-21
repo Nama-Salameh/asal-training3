@@ -30,5 +30,11 @@
   "or": "or",
   "acceptingTerms": "By checking this box, you are accepting the terms of the",
   "eSignAgreement": "E-Sign consent Agreement",
-  "applyingMessage": " Applying for a Jasper Mastercard is quick and easy, let's get you on board."
+  "applyingMessage": " Applying for a Jasper Mastercard is quick and easy, let's get you on board.",
+  "firstNamePlaceholder" : "First Name *",
+  "middleNamePlaceholder":"Middle Name",
+  "lastNamePlaceholder":"Last Name *",
+  "promoCodePlaceholder" : "Promo Code (optional)",
+  "emailPlaceholder" : "Enter your e-mail address",
+  "passwordPlaceholder" :  "Create password"
 }

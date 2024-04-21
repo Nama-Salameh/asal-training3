@@ -4,22 +4,25 @@ import localization from "./localizationConfig";
 const LanguageSelector = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
 
-  const changeLanguage = (language: string) => {
+  const handleChangeLanguage = (language: string) => {
+    console.log("prev language : ", localization.getLanguage());
     setSelectedLanguage(language);
+    console.log("selected language : ", selectedLanguage);
     localization.setLanguage(language);
+    console.log("current language : ", localization.getLanguage());
   };
 
   return (
     <div>
       <p>language:</p>
       <button
-        onClick={() => changeLanguage("en")}
+        onClick={() => handleChangeLanguage("en")}
         disabled={selectedLanguage === "en"}
       >
         English
       </button>
       <button
-        onClick={() => changeLanguage("ar")}
+        onClick={() => handleChangeLanguage("ar")}
         disabled={selectedLanguage === "ar"}
       >
         العربية

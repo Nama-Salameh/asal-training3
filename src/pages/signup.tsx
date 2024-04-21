@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
+import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import InputField from "../components/customInput";
 import googleIcon from "../images/SignUpImages/googleIcon.png";
 import rightArrowIcon from "../images/SignUpImages/rightArrowIcon.png";
-import styles from "./signup.module.scss";
-import { GlobalContext } from "../store";
-import { useRouter } from "next/navigation";
 import localization from "../localizationConfig";
+import { GlobalContext } from "../store";
+import styles from "./signup.module.scss";
 import LanguageSelector from "../LanguageSelector";
 
 const SignUpForm: React.FC = () => {
@@ -20,7 +20,7 @@ const SignUpForm: React.FC = () => {
   const inputInfo = {
     firstName: {
       name: localization.firstName,
-      placeholder: "First Name *",
+      placeholder: localization.firstNamePlaceholder,
       required: true,
       minLength: 3,
       pattern: localization.namePattern,
@@ -28,13 +28,13 @@ const SignUpForm: React.FC = () => {
     },
     middleName: {
       name: localization.middleName,
-      placeholder: "Middle Name",
+      placeholder: localization.middleNamePlaceholder,
       pattern: localization.namePattern,
       onChange: handleValidation,
     },
     lastName: {
       name: localization.lastName,
-      placeholder: "Last Name *",
+      placeholder: localization.lastNamePlaceholder,
       required: true,
       minLength: 3,
       pattern: localization.namePattern,
@@ -42,13 +42,13 @@ const SignUpForm: React.FC = () => {
     },
     promoCode: {
       name: localization.promoCode,
-      placeholder: "Promo Code (optional)",
+      placeholder: localization.promoCodePlaceholder,
       minLength: 8,
       onChange: handleValidation,
     },
     email: {
       name: localization.email,
-      placeholder: "Enter your e-mail address",
+      placeholder: localization.emailPlaceholder,
       type: localization.email,
       required: true,
       pattern: localization.emailPattern,
@@ -56,7 +56,7 @@ const SignUpForm: React.FC = () => {
     },
     password: {
       name: localization.password,
-      placeholder: "Create password",
+      placeholder: localization.passwordPlaceholder,
       type: localization.password,
       required: true,
       minLength: 8,
@@ -112,6 +112,7 @@ const SignUpForm: React.FC = () => {
     setIsValid(isValidForm);
   }, [formData, errors]);
 
+  
   return (
     <div className={styles.signUpPage}>
       <div className={styles.signUpFormContainer}>

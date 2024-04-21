@@ -30,5 +30,11 @@
   "or": "أو",
   "acceptingTerms": "من خلال الضغط على هذا المربع، فأنت توافق على الشروط",
   "eSignAgreement": "اتفاقية موافقة التوقيع الإلكتروني",
-  "applyingMessage": "التقديم لبطاقة ماستركارد جاسبر سريع وسهل، دعونا نبدأ!"
+  "applyingMessage": "التقديم لبطاقة ماستركارد جاسبر سريع وسهل، دعونا نبدأ!",
+  "firstNamePlaceholder": " * الاسم الأول",
+  "middleNamePlaceholder": "الاسم الأوسط",
+  "lastNamePlaceholder": " * الاسم الأخير",
+  "promoCodePlaceholder": "الكود (اختياري)",
+  "emailPlaceholder": "أدخل بريدك الالكتروني",
+  "passwordPlaceholder": "انشاء كلمة مرور"
 }

@@ -26,6 +26,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
   const { state, dispatch } = useContext(GlobalContext);
   const errorMessage = state.data.signUpErrorMessages[name] || "";
   const [validEmailMessage, setValidEmailMessage] = useState<string>("");
+  const [passwordContainNameErrorMessage, setPasswordContainNameErrorMessage] =
+    useState<string | null>(null);
 
   const handleValidation = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { validity, value } = event.target;
@@ -58,15 +60,24 @@ const CustomInput: React.FC<CustomInputProps> = ({
     if (name === localization.password) {
       const { firstName, lastName } = state.data.userData;
       if (
-        (firstName &&
-          value
-            .toLowerCase()
-            .trim()
-            .includes(firstName.toLowerCase().trim())) ||
-        (lastName &&
-          value.toLowerCase().trim().includes(lastName.toLowerCase().trim()))
+        (firstName && value.toLowerCase().includes(firstName.toLowerCase())) ||
+        (lastName && value.toLowerCase().includes(lastName.toLowerCase()))
       ) {
-        errorMessage = localization.passwordContainNameErrorMessage;
+        //errorMessage = localization.passwordContainNameErrorMessage;
+        setPasswordContainNameErrorMessage(
+          localization.passwordContainNameErrorMessage
+        );
+      }
+    }
+
+    if (name === localization.firstName || name === localization.lastName) {
+      const { password } = state.data.userData;
+      if (password.toLowerCase().includes(value.toLowerCase())) {
+        setPasswordContainNameErrorMessage(
+          localization.passwordContainNameErrorMessage
+        );
+      } else {
+        setPasswordContainNameErrorMessage("");
       }
     }
 
@@ -75,6 +86,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       payload: {
         signUpErrorMessages: {
           ...state.data.signUpErrorMessages,
+          ["password"]: passwordContainNameErrorMessage,
           [name]: errorMessage,
         },
       },
