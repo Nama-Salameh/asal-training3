@@ -23,13 +23,13 @@ const SignUpForm: React.FC = () => {
       placeholder: localization.firstNamePlaceholder,
       required: true,
       minLength: 3,
-      pattern: localization.namePattern,
+      pattern: "[a-zA-Zs]+",
       onChange: handleValidation,
     },
     middleName: {
       name: localization.middleName,
       placeholder: localization.middleNamePlaceholder,
-      pattern: localization.namePattern,
+      pattern: "[a-zA-Zs]+",
       onChange: handleValidation,
     },
     lastName: {
@@ -37,7 +37,7 @@ const SignUpForm: React.FC = () => {
       placeholder: localization.lastNamePlaceholder,
       required: true,
       minLength: 3,
-      pattern: localization.namePattern,
+      pattern: "[a-zA-Zs]+",
       onChange: handleValidation,
     },
     promoCode: {
@@ -51,7 +51,7 @@ const SignUpForm: React.FC = () => {
       placeholder: localization.emailPlaceholder,
       type: localization.email,
       required: true,
-      pattern: localization.emailPattern,
+      pattern: "^[^@]+@[^@]+\\.[^@]+$",
       onChange: handleValidation,
     },
     password: {
@@ -60,7 +60,7 @@ const SignUpForm: React.FC = () => {
       type: localization.password,
       required: true,
       minLength: 8,
-      pattern: localization.passwordPattern,
+      pattern: "^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$",
       onChange: handleValidation,
     },
     agreement: {
