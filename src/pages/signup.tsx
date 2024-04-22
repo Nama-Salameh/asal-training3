@@ -7,7 +7,6 @@ import rightArrowIcon from "../images/SignUpImages/rightArrowIcon.png";
 import localization from "../localizationConfig";
 import { GlobalContext } from "../store";
 import styles from "./signup.module.scss";
-import LanguageSelector from "../LanguageSelector";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -112,7 +111,6 @@ const SignUpForm: React.FC = () => {
     setIsValid(isValidForm);
   }, [formData, errors]);
 
-  
   return (
     <div className={styles.signUpPage}>
       <div className={styles.signUpFormContainer}>

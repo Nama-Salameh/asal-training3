@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import errorIcon from "../images/SignUpImages/error.png";
+import localization from "../localizationConfig";
 import { GlobalContext } from "../store";
 import styles from "./CustomInput.module.scss";
-import localization from "../localizationConfig";
 
 interface CustomInputProps {
   name: string;
@@ -24,80 +24,116 @@ const CustomInput: React.FC<CustomInputProps> = ({
   onChange,
 }) => {
   const { state, dispatch } = useContext(GlobalContext);
-  const errorMessage = state.data.signUpErrorMessages[name] || "";
+  const [errorMessage, setErrorMessage] = useState(
+    state.data.signUpErrorMessages[name] || ""
+  );
   const [validEmailMessage, setValidEmailMessage] = useState<string>("");
-  const [passwordContainNameErrorMessage, setPasswordContainNameErrorMessage] =
-    useState<string | null>(null);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
-  const handleValidation = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { validity, value } = event.target;
-    let errorMessage = "";
-
+  const validateInput = (event: any) => {
+    const { validity } = event.target;
     switch (true) {
       case validity.valueMissing:
-        errorMessage = localization.requiredErrorMessage;
+        setErrorMessage(localization.requiredErrorMessage);
         break;
       case (validity.typeMismatch && name === localization.email) ||
         (validity.patternMismatch && name === localization.email):
-        errorMessage = localization.validEmailErrorMessage;
+        setErrorMessage(localization.validEmailErrorMessage);
         break;
       case validity.patternMismatch && name === localization.password:
-        errorMessage = localization.validPasswordErrorMessage;
+        setErrorMessage(localization.validPasswordErrorMessage);
         break;
       case validity.patternMismatch &&
         (name === localization.firstName ||
           name === localization.lastName ||
           name === localization.middleName):
-        errorMessage = localization.validNameErrorMessage;
+        setErrorMessage(localization.validNameErrorMessage);
         break;
       case validity.tooShort:
-        errorMessage = localization.tooShortErrorMessage;
+        setErrorMessage(localization.tooShortErrorMessage);
         break;
       default:
+        setErrorMessage("");
         break;
     }
+  };
 
-    if (name === localization.password) {
-      const { firstName, lastName } = state.data.userData;
-      if (
-        (firstName && value.toLowerCase().includes(firstName.toLowerCase())) ||
-        (lastName && value.toLowerCase().includes(lastName.toLowerCase()))
-      ) {
-        //errorMessage = localization.passwordContainNameErrorMessage;
-        setPasswordContainNameErrorMessage(
-          localization.passwordContainNameErrorMessage
-        );
-      }
-    }
-
-    if (name === localization.firstName || name === localization.lastName) {
-      const { password } = state.data.userData;
-      if (password.toLowerCase().includes(value.toLowerCase())) {
-        setPasswordContainNameErrorMessage(
-          localization.passwordContainNameErrorMessage
-        );
-      } else {
-        setPasswordContainNameErrorMessage("");
-      }
-    }
-
-    dispatch({
-      type: "set-input",
-      payload: {
-        signUpErrorMessages: {
-          ...state.data.signUpErrorMessages,
-          ["password"]: passwordContainNameErrorMessage,
-          [name]: errorMessage,
+  const handleChangeErrorMessage = (passwordErrorMessage?: string) => {
+    if (passwordErrorMessage) {
+      console.log("change with pass");
+      console.log("pass ", passwordErrorMessage);
+      dispatch({
+        type: "set-input",
+        payload: {
+          signUpErrorMessages: {
+            ...state.data.signUpErrorMessages,
+            ["password"]: passwordErrorMessage,
+            [name]: errorMessage,
+          },
         },
-      },
-    });
-
-    if (name === localization.email && errorMessage === "") {
-      setValidEmailMessage(
-        `${localization.successVerificationEmailMessage} ${value}`
-      );
+      });
+    } else {
+      console.log("change without pass");
+      dispatch({
+        type: "set-input",
+        payload: {
+          signUpErrorMessages: {
+            ...state.data.signUpErrorMessages,
+            [name]: errorMessage,
+          },
+        },
+      });
     }
-    onChange(event);
+  };
+
+  const handleBlurValidation = (event: any) => {
+    const { value } = event.target;
+
+    if (name !== localization.password) {
+      validateInput(event);
+      if (name === localization.firstName || name === localization.lastName) {
+        console.log("included");
+        const { password } = state.data.userData;
+        setPasswordErrorMessage(
+          password.toLowerCase().includes(value.toLowerCase())
+            ? localization.passwordContainNameErrorMessage
+            : ""
+        );
+
+        if (passwordErrorMessage)
+          handleChangeErrorMessage(passwordErrorMessage);
+        else handleChangeErrorMessage();
+        console.log(state);
+      }
+
+      if (name === localization.email && errorMessage === "") {
+        setValidEmailMessage(
+          `${localization.successVerificationEmailMessage} ${value}`
+        );
+      }
+      onChange(event);
+    }
+  };
+
+  const handleChangeValidation = (event: any) => {
+    const { value } = event.target;
+    if (name === localization.password) {
+      validateInput(event);
+
+      if (!errorMessage) {
+        const { firstName, lastName } = state.data.userData;
+        if (
+          (firstName &&
+            value.toLowerCase().includes(firstName.toLowerCase())) ||
+          (lastName && value.toLowerCase().includes(lastName.toLowerCase()))
+        ) {
+          setErrorMessage(localization.passwordContainNameErrorMessage);
+        }
+      }
+
+      handleChangeErrorMessage();
+      onChange(event);
+    }
   };
 
   return (
@@ -112,7 +148,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
         minLength={minLength}
         pattern={pattern}
         type={type}
-        onChange={handleValidation}
+        onChange={handleChangeValidation}
+        onBlur={handleBlurValidation}
       />
       {errorMessage && (
         <div className={styles.errorMessage}>
@@ -124,7 +161,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           <span>{errorMessage}</span>
         </div>
       )}
-      {validEmailMessage && (
+      {validEmailMessage && !errorMessage && (
         <span className={styles.validEmailMessage}>{validEmailMessage}</span>
       )}
     </div>
