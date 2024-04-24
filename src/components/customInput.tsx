@@ -28,7 +28,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     state.data.signUpErrorMessages[name] || ""
   );
   const [validEmailMessage, setValidEmailMessage] = useState<string>("");
-  //const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
   const validateInput = (event: any) => {
     const { validity } = event.target;
@@ -58,11 +58,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
     }
   };
 
-  const handleChangeErrorMessage = (passwordErrorMessage?: string) => {
+  const usingDispatch = (passwordErrorMessage?: string) => {
     if (passwordErrorMessage) {
-      console.log("change with pass");
-      //display the password error message correctly "Password cannot contain your first or last name"
-      console.log("pass ", passwordErrorMessage);
       dispatch({
         type: "set-input",
         payload: {
@@ -73,8 +70,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           },
         },
       });
-      //display the state with previous password error message "Enter a valid password"
-      console.log("state in handle change (with pass)", state);
+      setPasswordErrorMessage(passwordErrorMessage);
     } else {
       console.log("change without pass");
       dispatch({
@@ -107,28 +103,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
           ? localization.passwordContainNameErrorMessage
           : "";
 
-        if (passwordErrorMessage)
-          handleChangeErrorMessage(passwordErrorMessage);
-        else handleChangeErrorMessage();
-
-        //display the state with previous password error message "Enter a valid password"
-        console.log("state in blur :", state);
+        if (passwordErrorMessage) usingDispatch(passwordErrorMessage);
+        else usingDispatch();
       }
-
-      if (name === localization.email && errorMessage === "") {
-        setValidEmailMessage(
-          `${localization.successVerificationEmailMessage} ${value}`
-        );
-      }
-      onChange(event);
-    }
-  };
-
-  const handleChangeValidation = (event: any) => {
-    const { value } = event.target;
-    if (name === localization.password) {
-      validateInput(event);
-
+    } else {
       if (!errorMessage) {
         const { firstName, lastName } = state.data.userData;
         if (
@@ -139,8 +117,21 @@ const CustomInput: React.FC<CustomInputProps> = ({
           setErrorMessage(localization.passwordContainNameErrorMessage);
         }
       }
+      usingDispatch();
+    }
+    if (name === localization.email && errorMessage === "") {
+      setValidEmailMessage(
+        `${localization.successVerificationEmailMessage} ${value}`
+      );
+    }
+    onChange(event);
+  };
 
-      handleChangeErrorMessage();
+  const handleChangeValidation = (event: any) => {
+    const { value } = event.target;
+    if (name === localization.password) {
+      validateInput(event);
+      usingDispatch();
       onChange(event);
     }
   };
@@ -173,8 +164,18 @@ const CustomInput: React.FC<CustomInputProps> = ({
             alt={localization.errorIcon}
           />
           <span>{errorMessage}</span>
-         </div>
+        </div>
       )}
+      {/* {passwordErrorMessage && (
+        <div className={styles.errorMessage}>
+          <img
+            src={errorIcon.src}
+            className={styles.errorIcon}
+            alt={localization.errorIcon}
+          />
+          <span>{passwordErrorMessage}</span>
+        </div>
+      )} */}
       {validEmailMessage && !errorMessage && (
         <span className={styles.validEmailMessage}>{validEmailMessage}</span>
       )}
