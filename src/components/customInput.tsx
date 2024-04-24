@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import errorIcon from "../images/SignUpImages/error.png";
 import localization from "../localizationConfig";
 import { GlobalContext } from "../store";
@@ -28,7 +28,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     state.data.signUpErrorMessages[name] || ""
   );
   const [validEmailMessage, setValidEmailMessage] = useState<string>("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  //const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
   const validateInput = (event: any) => {
     const { validity } = event.target;
@@ -61,17 +61,20 @@ const CustomInput: React.FC<CustomInputProps> = ({
   const handleChangeErrorMessage = (passwordErrorMessage?: string) => {
     if (passwordErrorMessage) {
       console.log("change with pass");
+      //display the password error message correctly "Password cannot contain your first or last name"
       console.log("pass ", passwordErrorMessage);
       dispatch({
         type: "set-input",
         payload: {
           signUpErrorMessages: {
             ...state.data.signUpErrorMessages,
-            ["password"]: passwordErrorMessage,
             [name]: errorMessage,
+            ["password"]: passwordErrorMessage,
           },
         },
       });
+      //display the state with previous password error message "Enter a valid password"
+      console.log("state in handle change (with pass)", state);
     } else {
       console.log("change without pass");
       dispatch({
@@ -91,19 +94,25 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
     if (name !== localization.password) {
       validateInput(event);
-      if (name === localization.firstName || name === localization.lastName) {
+
+      if (
+        (name === localization.firstName || name === localization.lastName) &&
+        value !== ""
+      ) {
         console.log("included");
         const { password } = state.data.userData;
-        setPasswordErrorMessage(
-          password.toLowerCase().includes(value.toLowerCase())
-            ? localization.passwordContainNameErrorMessage
-            : ""
-        );
+        const passwordErrorMessage = password
+          .toLowerCase()
+          .includes(value.toLowerCase())
+          ? localization.passwordContainNameErrorMessage
+          : "";
 
         if (passwordErrorMessage)
           handleChangeErrorMessage(passwordErrorMessage);
         else handleChangeErrorMessage();
-        console.log(state);
+
+        //display the state with previous password error message "Enter a valid password"
+        console.log("state in blur :", state);
       }
 
       if (name === localization.email && errorMessage === "") {
@@ -136,6 +145,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
     }
   };
 
+  useEffect(() => {
+    console.log("error message :", errorMessage);
+    console.log("state after change", state);
+  }, [state]);
+
   return (
     <div className={styles.inputContainer}>
       <input
@@ -159,7 +173,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             alt={localization.errorIcon}
           />
           <span>{errorMessage}</span>
-        </div>
+         </div>
       )}
       {validEmailMessage && !errorMessage && (
         <span className={styles.validEmailMessage}>{validEmailMessage}</span>
